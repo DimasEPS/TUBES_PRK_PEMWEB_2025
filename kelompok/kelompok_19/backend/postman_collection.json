@@ -1,0 +1,662 @@
+{
+  "info": {
+    "name": "SiPEMAU API",
+    "description": "API Documentation for Sistem Pengaduan Mahasiswa Universitas Lampung",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_19/backend/public",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Mahasiswa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "name",
+                  "value": "John Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "nim",
+                  "value": "2011521001",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "john@student.unila.ac.id",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "password123",
+                  "type": "text"
+                },
+                {
+                  "key": "confirm_password",
+                  "value": "password123",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["register"]
+            },
+            "description": "Register new mahasiswa account"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "admin@sipemau.ac.id",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "password",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Login for all user roles (Mahasiswa, Petugas, Admin)"
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["logout"]
+            },
+            "description": "Logout and destroy session"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mahasiswa",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mahasiswa/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["mahasiswa", "dashboard"]
+            },
+            "description": "Get mahasiswa dashboard with statistics"
+          }
+        },
+        {
+          "name": "List Complaints",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mahasiswa/complaints?page=1&status=MENUNGGU",
+              "host": ["{{baseUrl}}"],
+              "path": ["mahasiswa", "complaints"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "status",
+                  "value": "MENUNGGU",
+                  "description": "MENUNGGU, DIPROSES, SELESAI"
+                }
+              ]
+            },
+            "description": "Get list of mahasiswa's complaints with pagination"
+          }
+        },
+        {
+          "name": "Detail Complaint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mahasiswa/complaints/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["mahasiswa", "complaints", "1"]
+            },
+            "description": "Get complaint detail with notes"
+          }
+        },
+        {
+          "name": "Create Complaint",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Tidak bisa login ke SISTER",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Saya sudah mencoba login berkali-kali namun selalu muncul error. Mohon bantuannya.",
+                  "type": "text"
+                },
+                {
+                  "key": "category_id",
+                  "value": "6",
+                  "type": "text"
+                },
+                {
+                  "key": "evidence",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mahasiswa/complaints/create",
+              "host": ["{{baseUrl}}"],
+              "path": ["mahasiswa", "complaints", "create"]
+            },
+            "description": "Create new complaint with optional file upload"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Petugas",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petugas/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["petugas", "dashboard"]
+            },
+            "description": "Get petugas dashboard with unit statistics"
+          }
+        },
+        {
+          "name": "List Complaints",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petugas/complaints?page=1&status=MENUNGGU&category=6",
+              "host": ["{{baseUrl}}"],
+              "path": ["petugas", "complaints"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "status",
+                  "value": "MENUNGGU"
+                },
+                {
+                  "key": "category",
+                  "value": "6"
+                }
+              ]
+            },
+            "description": "Get complaints for petugas unit"
+          }
+        },
+        {
+          "name": "Detail Complaint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/petugas/complaints/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["petugas", "complaints", "1"]
+            },
+            "description": "Get complaint detail"
+          }
+        },
+        {
+          "name": "Update Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "complaint_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "status",
+                  "value": "DIPROSES",
+                  "type": "text",
+                  "description": "MENUNGGU, DIPROSES, SELESAI"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petugas/complaints/update-status",
+              "host": ["{{baseUrl}}"],
+              "path": ["petugas", "complaints", "update-status"]
+            },
+            "description": "Update complaint status"
+          }
+        },
+        {
+          "name": "Add Note",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "complaint_id",
+                  "value": "1",
+                  "type": "text"
+                },
+                {
+                  "key": "note",
+                  "value": "Sedang kami proses, mohon ditunggu",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/petugas/complaints/add-note",
+              "host": ["{{baseUrl}}"],
+              "path": ["petugas", "complaints", "add-note"]
+            },
+            "description": "Add follow-up note to complaint"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "dashboard"]
+            },
+            "description": "Get admin dashboard with overall statistics"
+          }
+        },
+        {
+          "name": "Units",
+          "item": [
+            {
+              "name": "List Units",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/units",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "units"]
+                }
+              }
+            },
+            {
+              "name": "Create Unit",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Unit Baru",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi unit",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/units/create",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "units", "create"]
+                }
+              }
+            },
+            {
+              "name": "Update Unit",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Unit Updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/units/update/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "units", "update", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Unit",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/units/delete/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "units", "delete", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Categories",
+          "item": [
+            {
+              "name": "List Categories",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/categories",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "categories"]
+                }
+              }
+            },
+            {
+              "name": "Create Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Kategori Baru",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi kategori",
+                      "type": "text"
+                    },
+                    {
+                      "key": "unit_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/categories/create",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "categories", "create"]
+                }
+              }
+            },
+            {
+              "name": "Update Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Kategori Updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "description",
+                      "value": "Deskripsi updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "unit_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "is_active",
+                      "value": "1",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/categories/update/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "categories", "update", "1"]
+                }
+              }
+            },
+            {
+              "name": "Delete Category",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/categories/delete/1",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "categories", "delete", "1"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Petugas",
+          "item": [
+            {
+              "name": "List Petugas",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/petugas",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "petugas"]
+                }
+              }
+            },
+            {
+              "name": "Create Petugas",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Petugas Baru",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "petugas@sipemau.ac.id",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "password123",
+                      "type": "text"
+                    },
+                    {
+                      "key": "unit_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "jabatan",
+                      "value": "Staff",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/petugas/create",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "petugas", "create"]
+                }
+              }
+            },
+            {
+              "name": "Update Petugas",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "key": "name",
+                      "value": "Petugas Updated",
+                      "type": "text"
+                    },
+                    {
+                      "key": "email",
+                      "value": "petugas@sipemau.ac.id",
+                      "type": "text"
+                    },
+                    {
+                      "key": "password",
+                      "value": "",
+                      "type": "text",
+                      "description": "Leave empty to keep current password"
+                    },
+                    {
+                      "key": "unit_id",
+                      "value": "1",
+                      "type": "text"
+                    },
+                    {
+                      "key": "jabatan",
+                      "value": "Supervisor",
+                      "type": "text"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/admin/petugas/update/2",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "petugas", "update", "2"]
+                }
+              }
+            },
+            {
+              "name": "Delete Petugas",
+              "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/admin/petugas/delete/2",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["admin", "petugas", "delete", "2"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

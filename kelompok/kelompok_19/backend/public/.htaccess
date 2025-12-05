@@ -1,0 +1,33 @@
+# Deny access to all files
+<Files *>
+    Order Deny,Allow
+    Deny from all
+</Files>
+
+# Allow only index.php
+<Files index.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+
+# Enable rewrite engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Redirect to index.php if file doesn't exist
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# PHP settings
+php_flag display_errors Off
+php_value upload_max_filesize 5M
+php_value post_max_size 5M
