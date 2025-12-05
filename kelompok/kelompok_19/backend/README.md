@@ -41,34 +41,36 @@ backend/
 
    ```bash
    mysql -u root -p < database/SIPEMAU.sql
+   mysql -u root -p sipemau_db < database/seed.sql
    ```
 
-2. **Konfigurasi Database**
+2. **Setup Environment**
 
-   Edit `config/database.php`:
+   Copy `.env.example` ke `.env`:
 
-   ```php
-   define('DB_HOST', 'localhost');
-   define('DB_NAME', 'sipemau_db');
-   define('DB_USER', 'root');
-   define('DB_PASS', '');
+   ```bash
+   cp .env.example .env
    ```
 
-3. **Konfigurasi Base URL**
+   Edit `.env` sesuai konfigurasi:
 
-   Edit `config/app.php`:
+   ```env
+   DB_HOST=localhost
+   DB_NAME=sipemau_db
+   DB_USER=root
+   DB_PASS=
 
-   ```php
-   define('BASE_URL', 'http://localhost/path/to/backend/public');
+   APP_URL=http://localhost/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_19/backend/public
+   APP_DEBUG=true
    ```
 
-4. **Set Permissions**
+3. **Set Permissions**
 
    ```bash
    chmod 755 assets/uploads
    ```
 
-5. **Apache Configuration**
+4. **Apache Configuration**
 
    Set document root ke folder `public/`:
 
@@ -104,6 +106,38 @@ backend/
 - ✅ CRUD Unit
 - ✅ CRUD Kategori
 - ✅ CRUD Akun Petugas
+
+## Testing API
+
+### Postman Collection
+
+Import file `postman_collection.json` ke Postman:
+
+1. Buka Postman
+2. File → Import → pilih `postman_collection.json`
+3. Set variable `baseUrl` di Collection settings
+4. Mulai testing dari request "Login" untuk create session
+
+### API Documentation
+
+Lihat dokumentasi lengkap di **[API_DOCUMENTATION.md](API_DOCUMENTATION.md)**
+
+### Manual Testing dengan cURL
+
+```bash
+# Login
+curl -X POST http://localhost/.../public/login \
+  -d "email=admin@sipemau.ac.id" \
+  -d "password=password" \
+  -c cookies.txt
+
+# Create complaint (menggunakan session dari login)
+curl -X POST http://localhost/.../public/mahasiswa/complaints/create \
+  -b cookies.txt \
+  -F "title=Test Complaint" \
+  -F "description=Testing API" \
+  -F "category_id=6"
+```
 
 ## Routing
 
@@ -141,6 +175,7 @@ backend/
 
 ## Security Features
 
+- ✅ Environment variables (.env)
 - ✅ Password hashing dengan bcrypt
 - ✅ Prepared statements (SQL injection prevention)
 - ✅ Input sanitization
@@ -150,21 +185,24 @@ backend/
 
 ## Default Accounts
 
-Setelah setup, Anda perlu membuat akun admin secara manual:
+Setelah import `seed.sql`, gunakan akun berikut untuk testing:
 
-```sql
--- Insert admin user
-INSERT INTO users (name, email, password_hash, role)
-VALUES ('Administrator', 'admin@sipemau.ac.id', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'ADMIN');
+```
+Admin:
+  Email: admin@sipemau.ac.id
+  Password: password
 
--- Get the user ID
-SET @admin_id = LAST_INSERT_ID();
+Petugas (Unit TI):
+  Email: budi@sipemau.ac.id
+  Password: password
 
--- Insert admin profile
-INSERT INTO admin (id, level) VALUES (@admin_id, 'superadmin');
+Mahasiswa:
+  Email: john@student.unila.ac.id
+  Password: password
+  NIM: 2011521001
 ```
 
-Password default: `password` (segera ganti setelah login)
+**⚠️ Segera ganti password setelah login pertama untuk production!**
 
 ## API Response Format
 
@@ -180,14 +218,38 @@ Untuk AJAX requests, gunakan header `Accept: application/json`:
 
 ## Development
 
-Untuk development mode, aktifkan error display di `public/index.php`:
+### Debug Mode
 
-```php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+Set di `.env`:
+
+```env
+APP_ENV=development
+APP_DEBUG=true
 ```
 
-**⚠️ DISABLE untuk production!**
+Ini akan mengaktifkan error display. **⚠️ Set `APP_DEBUG=false` untuk production!**
+
+### Environment Variables
+
+Semua konfigurasi ada di `.env`:
+
+- `DB_*` - Database credentials
+- `APP_URL` - Base URL aplikasi
+- `APP_DEBUG` - Debug mode
+- `UPLOAD_MAX_SIZE` - Max upload size (bytes)
+- `UPLOAD_ALLOWED_EXT` - Allowed file extensions
+- `SESSION_LIFETIME` - Session timeout (seconds)
+- `PASSWORD_MIN_LENGTH` - Min password length
+- `ITEMS_PER_PAGE` - Pagination items
+
+### Structure
+
+Backend mengikuti pola **MVC sederhana**:
+
+- **Models**: Query langsung di Controller (untuk simplicity)
+- **Views**: File PHP di `modules/*/`
+- **Controllers**: Class di `modules/*/Controller.php`
+- **Router**: Simple regex-based routing di `core/Router.php`
 
 ## License
 
