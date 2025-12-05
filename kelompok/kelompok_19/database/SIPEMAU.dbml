@@ -1,0 +1,115 @@
+// SiPEMAU DBML (for dbdiagram.io)
+// Sistem Pengaduan Mahasiswa Universitas Lampung - Version 2.0
+
+Enum user_role {
+  MAHASISWA
+  PETUGAS
+  ADMIN
+}
+
+Enum complaint_status {
+  MENUNGGU
+  DIPROSES
+  SELESAI
+}
+
+Table users {
+  id            int           [pk, increment, note: 'PK base user']
+  name          varchar(100)  [not null, note: 'Nama lengkap']
+  email         varchar(100)  [not null, unique, note: 'Login email unik']
+  password_hash varchar(255)  [not null, note: 'Hashed password']
+  role          user_role     [not null, note: 'Jenis akun']
+  created_at    datetime      [default: `CURRENT_TIMESTAMP`]
+  updated_at    datetime      [default: `CURRENT_TIMESTAMP`]
+  Note: 'Master akun; turunan pada tabel mahasiswa/petugas/admin'
+}
+
+Table mahasiswa {
+  id         int          [pk, ref: > users.id, note: 'Share PK dengan users']
+  nim        varchar(20)  [not null, unique, note: 'Nomor Induk Mahasiswa']
+  created_at datetime      [default: `CURRENT_TIMESTAMP`]
+  Note: 'Profil khusus mahasiswa'
+}
+
+Table petugas {
+  id         int           [pk, ref: > users.id, note: 'Share PK dengan users']
+  unit_id    int           [not null, note: 'Unit penanggung jawab']
+  jabatan    varchar(100)  [note: 'Jabatan petugas']
+  created_at datetime       [default: `CURRENT_TIMESTAMP`]
+  Note: 'Profil petugas unit'
+}
+
+Table admin {
+  id         int           [pk, ref: > users.id, note: 'Share PK dengan users']
+  level      varchar(50)   [default: 'superadmin', note: 'Level akses']
+  created_at datetime       [default: `CURRENT_TIMESTAMP`]
+  Note: 'Profil admin sistem'
+}
+
+Table units {
+  id          int           [pk, increment]
+  name        varchar(100)  [not null, unique]
+  description text
+  is_active   bool          [default: true]
+  created_at  datetime      [default: `CURRENT_TIMESTAMP`]
+  updated_at  datetime      [default: `CURRENT_TIMESTAMP`]
+  Note: 'Master unit kampus penerima laporan'
+}
+
+Table categories {
+  id          int           [pk, increment]
+  unit_id     int           [not null, ref: > units.id]
+  name        varchar(100)  [not null, unique]
+  description text
+  is_active   bool          [default: true]
+  created_at  datetime      [default: `CURRENT_TIMESTAMP`]
+  updated_at  datetime      [default: `CURRENT_TIMESTAMP`]
+  Note: 'Kategori laporan; selalu terhubung ke satu unit'
+}
+
+Table complaints {
+  id            int               [pk, increment]
+  mahasiswa_id  int               [not null, ref: > mahasiswa.id]
+  category_id   int               [not null, ref: > categories.id]
+  title         varchar(150)      [not null]
+  description   text              [not null]
+  evidence_path varchar(255)
+  status        complaint_status  [default: MENUNGGU]
+  created_at    datetime          [default: `CURRENT_TIMESTAMP`]
+  updated_at    datetime          [default: `CURRENT_TIMESTAMP`]
+  resolved_at   datetime
+  Note: 'Pengaduan mahasiswa dan status pemrosesan'
+
+  Indexes {
+    (mahasiswa_id)
+    (category_id)
+    (status)
+  }
+}
+
+Table complaint_notes {
+  id           int      [pk, increment]
+  complaint_id int      [not null, ref: > complaints.id]
+  petugas_id   int      [not null, ref: > petugas.id]
+  note         text     [not null]
+  created_at   datetime [default: `CURRENT_TIMESTAMP`]
+  Note: 'Catatan tindak lanjut oleh petugas'
+
+  Indexes {
+    (complaint_id)
+    (petugas_id)
+  }
+}
+
+Ref: mahasiswa.id > users.id [delete: cascade, update: cascade]
+Ref: petugas.id   > users.id [delete: cascade, update: cascade]
+Ref: admin.id     > users.id [delete: cascade, update: cascade]
+
+Ref: petugas.unit_id    > units.id
+Ref: categories.unit_id > units.id
+
+Ref: complaints.mahasiswa_id > mahasiswa.id
+Ref: complaints.category_id  > categories.id
+
+Ref: complaint_notes.complaint_id > complaints.id
+Ref: complaint_notes.petugas_id   > petugas.id
