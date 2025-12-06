@@ -6,25 +6,22 @@
 
 class Controller {
     protected $db;
+    protected $parsedInput = null;
     
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
+        $this->parseInput();
     }
     
     /**
-     * Load view file (not used for API, kept for compatibility)
+     * Parse input for PUT/PATCH/DELETE requests
      */
-    protected function view($viewPath, $data = []) {
-        // Return JSON instead of loading view files
-        // Since this is an API backend without frontend views
-        http_response_code(501);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'View rendering not implemented. This is an API backend.',
-            'requested_view' => $viewPath
-        ]);
-        exit;
+    private function parseInput() {
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+            $input = file_get_contents('php://input');
+            parse_str($input, $this->parsedInput);
+        }
     }
     
     /**
@@ -53,6 +50,16 @@ class Controller {
             return $_POST;
         }
         return isset($_POST[$key]) ? $_POST[$key] : $default;
+    }
+    
+    /**
+     * Get PUT/PATCH/DELETE data from parsed input
+     */
+    protected function input($key = null, $default = null) {
+        if ($key === null) {
+            return $this->parsedInput !== null ? $this->parsedInput : [];
+        }
+        return isset($this->parsedInput[$key]) ? $this->parsedInput[$key] : $default;
     }
     
     /**
