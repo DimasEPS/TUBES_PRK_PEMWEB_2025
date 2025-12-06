@@ -80,15 +80,23 @@ class Controller {
     }
     
     /**
-     * Check if user is logged in
+     * Check if user is logged in 
      */
     protected function requireAuth($role = null) {
         if (!isset($_SESSION['user_id'])) {
-            $this->redirect('/login');
+            $this->json([
+                'success' => false,
+                'message' => 'Unauthorized - Please login first'
+            ], 401);
         }
         
         if ($role !== null && $_SESSION['role'] !== $role) {
-            $this->redirect('/unauthorized');
+            $this->json([
+                'success' => false,
+                'message' => 'Forbidden - Insufficient permissions',
+                'required_role' => $role,
+                'your_role' => $_SESSION['role'] ?? null
+            ], 403);
         }
     }
 }
