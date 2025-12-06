@@ -12,11 +12,19 @@ class Controller {
     }
     
     /**
-     * Load view file
+     * Load view file (not used for API, kept for compatibility)
      */
     protected function view($viewPath, $data = []) {
-        extract($data);
-        require_once dirname(__DIR__) . "/modules/{$viewPath}.php";
+        // Return JSON instead of loading view files
+        // Since this is an API backend without frontend views
+        http_response_code(501);
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'View rendering not implemented. This is an API backend.',
+            'requested_view' => $viewPath
+        ]);
+        exit;
     }
     
     /**

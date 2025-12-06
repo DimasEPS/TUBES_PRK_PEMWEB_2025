@@ -4,6 +4,18 @@
  * Initialize application
  */
 
+// CORS headers for frontend
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Allow-Credentials: true');
+
+// Handle preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
 // Start session
 session_start();
 
@@ -78,19 +90,9 @@ $router->get('/unauthorized', function() {
 });
 
 // ==================== AUTH ROUTES ====================
-$router->get('/login', function() {
-    $controller = new AuthController();
-    $controller->showLogin();
-});
-
 $router->post('/login', function() {
     $controller = new AuthController();
     $controller->login();
-});
-
-$router->get('/register', function() {
-    $controller = new AuthController();
-    $controller->showRegister();
 });
 
 $router->post('/register', function() {
@@ -114,9 +116,9 @@ $router->get('/mahasiswa/complaints', function() {
     $controller->listComplaints();
 });
 
-$router->get('/mahasiswa/complaints/create', function() {
+$router->get('/mahasiswa/complaints/categories', function() {
     $controller = new MahasiswaController();
-    $controller->showCreateComplaint();
+    $controller->getCategories();
 });
 
 $router->post('/mahasiswa/complaints/create', function() {

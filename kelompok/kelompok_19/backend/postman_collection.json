@@ -8,7 +8,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_19/backend/public",
+      "value": "http://localhost:8000",
       "type": "string"
     }
   ],
@@ -163,6 +163,19 @@
               "path": ["mahasiswa", "complaints", "1"]
             },
             "description": "Get complaint detail with notes"
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mahasiswa/complaints/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["mahasiswa", "complaints", "categories"]
+            },
+            "description": "Get active categories for create complaint form"
           }
         },
         {

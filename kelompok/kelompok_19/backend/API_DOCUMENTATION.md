@@ -1,14 +1,18 @@
 # SiPEMAU API Documentation
 
+REST API untuk Sistem Pengaduan Mahasiswa Universitas Lampung
+
 ## Base URL
 
 ```
-http://localhost/TUBES_PRK_PEMWEB_2025/kelompok/kelompok_19/backend/public
+http://localhost:8000
 ```
 
 ## Authentication
 
 Aplikasi menggunakan session-based authentication. Setelah login, session akan disimpan otomatis.
+
+**Note:** Semua response menggunakan format JSON.
 
 ---
 
@@ -23,6 +27,32 @@ Aplikasi menggunakan session-based authentication. Setelah login, session akan d
 
 ---
 
+## Response Format
+
+Semua endpoint mengembalikan response dalam format JSON:
+
+**Success Response:**
+
+```json
+{
+  "success": true,
+  "message": "Operation successful",
+  "data": { ... }
+}
+```
+
+**Error Response:**
+
+```json
+{
+  "success": false,
+  "message": "Error message",
+  "errors": ["Error 1", "Error 2"] // Optional, untuk validation errors
+}
+```
+
+---
+
 ## Authentication Endpoints
 
 ### Register Mahasiswa
@@ -31,7 +61,7 @@ Aplikasi menggunakan session-based authentication. Setelah login, session akan d
 
 Registrasi akun mahasiswa baru.
 
-**Request Body:**
+**Request Body (x-www-form-urlencoded):**
 
 ```
 name: string (required)
@@ -44,7 +74,8 @@ confirm_password: string (required, must match password)
 **Example:**
 
 ```bash
-curl -X POST http://localhost/.../public/register \
+curl -X POST http://localhost:8000/register \
+  -H "Content-Type: application/x-www-form-urlencoded" \
   -d "name=John Doe" \
   -d "nim=2011521001" \
   -d "email=john@student.unila.ac.id" \
@@ -52,15 +83,39 @@ curl -X POST http://localhost/.../public/register \
   -d "confirm_password=password123"
 ```
 
-**Success Response:**
+**Success Response (201 Created):**
 
-- Status: 302 (Redirect to login)
-- Session: `success` message set
+```json
+{
+  "success": true,
+  "message": "Registrasi berhasil",
+  "data": {
+    "id": 4,
+    "name": "John Doe",
+    "email": "john@student.unila.ac.id",
+    "nim": "2011521001"
+  }
+}
+```
 
-**Error Response:**
+**Error Response (400 Bad Request):**
 
-- Session: `error` message set
-- Redirects back to register page
+```json
+{
+  "success": false,
+  "message": "Validasi gagal",
+  "errors": ["Email tidak valid", "Password minimal 8 karakter"]
+}
+```
+
+**Error Response (409 Conflict):**
+
+```json
+{
+  "success": false,
+  "message": "Email sudah terdaftar"
+}
+```
 
 ---
 
@@ -70,7 +125,7 @@ curl -X POST http://localhost/.../public/register \
 
 Login untuk semua role (Mahasiswa, Petugas, Admin).
 
-**Request Body:**
+**Request Body (x-www-form-urlencoded):**
 
 ```
 email: string (required)
@@ -80,26 +135,68 @@ password: string (required)
 **Example:**
 
 ```bash
-curl -X POST http://localhost/.../public/login \
+curl -X POST http://localhost:8000/login \
+  -H "Content-Type: application/x-www-form-urlencoded" \
   -d "email=admin@sipemau.ac.id" \
   -d "password=password"
 ```
 
-**Success Response:**
+**Success Response (200 OK):**
 
-- Status: 302 (Redirect based on role)
-- Session variables set:
-  - `user_id`
-  - `name`
-  - `email`
-  - `role` (MAHASISWA/PETUGAS/ADMIN)
-  - Additional: `nim` (mahasiswa), `unit_id` & `jabatan` (petugas)
+```json
+{
+  "success": true,
+  "message": "Login berhasil",
+  "data": {
+    "id": 1,
+    "name": "Admin SiPEMAU",
+    "email": "admin@sipemau.ac.id",
+    "role": "ADMIN"
+  }
+}
+```
 
-**Redirects:**
+**For Mahasiswa:**
 
-- Mahasiswa → `/mahasiswa/dashboard`
-- Petugas → `/petugas/dashboard`
-- Admin → `/admin/dashboard`
+```json
+{
+  "success": true,
+  "message": "Login berhasil",
+  "data": {
+    "id": 3,
+    "name": "John Doe",
+    "email": "john@student.unila.ac.id",
+    "role": "MAHASISWA",
+    "nim": "2011521001"
+  }
+}
+```
+
+**For Petugas:**
+
+```json
+{
+  "success": true,
+  "message": "Login berhasil",
+  "data": {
+    "id": 2,
+    "name": "Budi Santoso",
+    "email": "budi@sipemau.ac.id",
+    "role": "PETUGAS",
+    "unit_id": 1,
+    "jabatan": "Staff"
+  }
+}
+```
+
+**Error Response (401 Unauthorized):**
+
+```json
+{
+  "success": false,
+  "message": "Email atau password salah"
+}
+```
 
 ---
 
@@ -112,13 +209,17 @@ Logout dan hapus session.
 **Example:**
 
 ```bash
-curl http://localhost/.../public/logout
+curl http://localhost:8000/logout
 ```
 
-**Response:**
+**Success Response (200 OK):**
 
-- Status: 302 (Redirect to home)
-- Session destroyed
+```json
+{
+  "success": true,
+  "message": "Logout berhasil"
+}
+```
 
 ---
 

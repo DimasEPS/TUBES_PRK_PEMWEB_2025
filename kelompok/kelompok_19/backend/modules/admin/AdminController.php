@@ -41,9 +41,12 @@ class AdminController extends Controller {
         ");
         $complaintsByUnit = $stmt->fetchAll();
         
-        $this->view('admin/dashboard', [
-            'stats' => $stats,
-            'complaintsByUnit' => $complaintsByUnit
+        $this->json([
+            'success' => true,
+            'data' => [
+                'stats' => $stats,
+                'complaintsByUnit' => $complaintsByUnit
+            ]
         ]);
     }
     
@@ -62,7 +65,10 @@ class AdminController extends Controller {
         ");
         $units = $stmt->fetchAll();
         
-        $this->view('admin/units/list', ['units' => $units]);
+        $this->json([
+            'success' => true,
+            'data' => $units
+        ]);
     }
     
     /**
@@ -74,8 +80,12 @@ class AdminController extends Controller {
         $isActive = $this->post('is_active', 1);
         
         if (empty($name)) {
-            $_SESSION['error'] = 'Nama unit harus diisi';
-            $this->redirect('/admin/units');
+            $this->json([
+                'success' => false,
+                'message' => 'Nama unit harus diisi',
+                'errors' => ['name' => 'Nama unit harus diisi']
+            ], 400);
+            return;
         }
         
         try {
@@ -85,12 +95,17 @@ class AdminController extends Controller {
             ");
             $stmt->execute([$name, $description, $isActive]);
             
-            $_SESSION['success'] = 'Unit berhasil ditambahkan';
+            $this->json([
+                'success' => true,
+                'message' => 'Unit berhasil ditambahkan',
+                'data' => ['id' => $this->db->lastInsertId()]
+            ], 201);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menambahkan unit: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan unit: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/units');
     }
     
     /**
@@ -102,8 +117,12 @@ class AdminController extends Controller {
         $isActive = $this->post('is_active', 1);
         
         if (empty($name)) {
-            $_SESSION['error'] = 'Nama unit harus diisi';
-            $this->redirect('/admin/units');
+            $this->json([
+                'success' => false,
+                'message' => 'Nama unit harus diisi',
+                'errors' => ['name' => 'Nama unit harus diisi']
+            ], 400);
+            return;
         }
         
         try {
@@ -114,12 +133,16 @@ class AdminController extends Controller {
             ");
             $stmt->execute([$name, $description, $isActive, $id]);
             
-            $_SESSION['success'] = 'Unit berhasil diperbarui';
+            $this->json([
+                'success' => true,
+                'message' => 'Unit berhasil diperbarui'
+            ]);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal memperbarui unit: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui unit: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/units');
     }
     
     /**
@@ -133,19 +156,26 @@ class AdminController extends Controller {
             $count = $stmt->fetch()['total'];
             
             if ($count > 0) {
-                $_SESSION['error'] = 'Unit tidak dapat dihapus karena masih memiliki kategori';
-                $this->redirect('/admin/units');
+                $this->json([
+                    'success' => false,
+                    'message' => 'Unit tidak dapat dihapus karena masih memiliki kategori'
+                ], 409);
+                return;
             }
             
             $stmt = $this->db->prepare("DELETE FROM units WHERE id = ?");
             $stmt->execute([$id]);
             
-            $_SESSION['success'] = 'Unit berhasil dihapus';
+            $this->json([
+                'success' => true,
+                'message' => 'Unit berhasil dihapus'
+            ]);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menghapus unit: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menghapus unit: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/units');
     }
     
     // ==================== CATEGORIES MANAGEMENT ====================
@@ -166,9 +196,12 @@ class AdminController extends Controller {
         $stmt = $this->db->query("SELECT id, name FROM units WHERE is_active = 1 ORDER BY name");
         $units = $stmt->fetchAll();
         
-        $this->view('admin/categories/list', [
-            'categories' => $categories,
-            'units' => $units
+        $this->json([
+            'success' => true,
+            'data' => [
+                'categories' => $categories,
+                'units' => $units
+            ]
         ]);
     }
     
@@ -182,12 +215,16 @@ class AdminController extends Controller {
         $isActive = $this->post('is_active', 1);
         
         $errors = [];
-        if (empty($name)) $errors[] = 'Nama kategori harus diisi';
-        if (empty($unitId)) $errors[] = 'Unit harus dipilih';
+        if (empty($name)) $errors['name'] = 'Nama kategori harus diisi';
+        if (empty($unitId)) $errors['unit_id'] = 'Unit harus dipilih';
         
         if (!empty($errors)) {
-            $_SESSION['error'] = implode('<br>', $errors);
-            $this->redirect('/admin/categories');
+            $this->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $errors
+            ], 400);
+            return;
         }
         
         try {
@@ -197,12 +234,17 @@ class AdminController extends Controller {
             ");
             $stmt->execute([$name, $description, $unitId, $isActive]);
             
-            $_SESSION['success'] = 'Kategori berhasil ditambahkan';
+            $this->json([
+                'success' => true,
+                'message' => 'Kategori berhasil ditambahkan',
+                'data' => ['id' => $this->db->lastInsertId()]
+            ], 201);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menambahkan kategori: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan kategori: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/categories');
     }
     
     /**
@@ -215,12 +257,16 @@ class AdminController extends Controller {
         $isActive = $this->post('is_active', 1);
         
         $errors = [];
-        if (empty($name)) $errors[] = 'Nama kategori harus diisi';
-        if (empty($unitId)) $errors[] = 'Unit harus dipilih';
+        if (empty($name)) $errors['name'] = 'Nama kategori harus diisi';
+        if (empty($unitId)) $errors['unit_id'] = 'Unit harus dipilih';
         
         if (!empty($errors)) {
-            $_SESSION['error'] = implode('<br>', $errors);
-            $this->redirect('/admin/categories');
+            $this->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $errors
+            ], 400);
+            return;
         }
         
         try {
@@ -231,12 +277,16 @@ class AdminController extends Controller {
             ");
             $stmt->execute([$name, $description, $unitId, $isActive, $id]);
             
-            $_SESSION['success'] = 'Kategori berhasil diperbarui';
+            $this->json([
+                'success' => true,
+                'message' => 'Kategori berhasil diperbarui'
+            ]);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal memperbarui kategori: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui kategori: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/categories');
     }
     
     /**
@@ -250,19 +300,26 @@ class AdminController extends Controller {
             $count = $stmt->fetch()['total'];
             
             if ($count > 0) {
-                $_SESSION['error'] = 'Kategori tidak dapat dihapus karena masih memiliki pengaduan';
-                $this->redirect('/admin/categories');
+                $this->json([
+                    'success' => false,
+                    'message' => 'Kategori tidak dapat dihapus karena masih memiliki pengaduan'
+                ], 409);
+                return;
             }
             
             $stmt = $this->db->prepare("DELETE FROM categories WHERE id = ?");
             $stmt->execute([$id]);
             
-            $_SESSION['success'] = 'Kategori berhasil dihapus';
+            $this->json([
+                'success' => true,
+                'message' => 'Kategori berhasil dihapus'
+            ]);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menghapus kategori: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menghapus kategori: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/categories');
     }
     
     // ==================== PETUGAS MANAGEMENT ====================
@@ -284,9 +341,12 @@ class AdminController extends Controller {
         $stmt = $this->db->query("SELECT id, name FROM units WHERE is_active = 1 ORDER BY name");
         $units = $stmt->fetchAll();
         
-        $this->view('admin/petugas/list', [
-            'petugas' => $petugas,
-            'units' => $units
+        $this->json([
+            'success' => true,
+            'data' => [
+                'petugas' => $petugas,
+                'units' => $units
+            ]
         ]);
     }
     
@@ -302,24 +362,32 @@ class AdminController extends Controller {
         
         // Validation
         $errors = [];
-        if (empty($name)) $errors[] = 'Nama harus diisi';
-        if (empty($email) || !validateEmail($email)) $errors[] = 'Email tidak valid';
+        if (empty($name)) $errors['name'] = 'Nama harus diisi';
+        if (empty($email) || !validateEmail($email)) $errors['email'] = 'Email tidak valid';
         if (strlen($password) < PASSWORD_MIN_LENGTH) {
-            $errors[] = 'Password minimal ' . PASSWORD_MIN_LENGTH . ' karakter';
+            $errors['password'] = 'Password minimal ' . PASSWORD_MIN_LENGTH . ' karakter';
         }
-        if (empty($unitId)) $errors[] = 'Unit harus dipilih';
+        if (empty($unitId)) $errors['unit_id'] = 'Unit harus dipilih';
         
         if (!empty($errors)) {
-            $_SESSION['error'] = implode('<br>', $errors);
-            $this->redirect('/admin/petugas');
+            $this->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $errors
+            ], 400);
+            return;
         }
         
         // Check if email exists
         $stmt = $this->db->prepare("SELECT id FROM users WHERE email = ?");
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
-            $_SESSION['error'] = 'Email sudah terdaftar';
-            $this->redirect('/admin/petugas');
+            $this->json([
+                'success' => false,
+                'message' => 'Email sudah terdaftar',
+                'errors' => ['email' => 'Email sudah terdaftar']
+            ], 409);
+            return;
         }
         
         try {
@@ -342,13 +410,18 @@ class AdminController extends Controller {
             
             $this->db->commit();
             
-            $_SESSION['success'] = 'Petugas berhasil ditambahkan';
+            $this->json([
+                'success' => true,
+                'message' => 'Petugas berhasil ditambahkan',
+                'data' => ['id' => $userId]
+            ], 201);
         } catch (Exception $e) {
             $this->db->rollBack();
-            $_SESSION['error'] = 'Gagal menambahkan petugas: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan petugas: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/petugas');
     }
     
     /**
@@ -363,13 +436,17 @@ class AdminController extends Controller {
         
         // Validation
         $errors = [];
-        if (empty($name)) $errors[] = 'Nama harus diisi';
-        if (empty($email) || !validateEmail($email)) $errors[] = 'Email tidak valid';
-        if (empty($unitId)) $errors[] = 'Unit harus dipilih';
+        if (empty($name)) $errors['name'] = 'Nama harus diisi';
+        if (empty($email) || !validateEmail($email)) $errors['email'] = 'Email tidak valid';
+        if (empty($unitId)) $errors['unit_id'] = 'Unit harus dipilih';
         
         if (!empty($errors)) {
-            $_SESSION['error'] = implode('<br>', $errors);
-            $this->redirect('/admin/petugas');
+            $this->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $errors
+            ], 400);
+            return;
         }
         
         try {
@@ -402,13 +479,17 @@ class AdminController extends Controller {
             
             $this->db->commit();
             
-            $_SESSION['success'] = 'Petugas berhasil diperbarui';
+            $this->json([
+                'success' => true,
+                'message' => 'Petugas berhasil diperbarui'
+            ]);
         } catch (Exception $e) {
             $this->db->rollBack();
-            $_SESSION['error'] = 'Gagal memperbarui petugas: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui petugas: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/petugas');
     }
     
     /**
@@ -419,11 +500,15 @@ class AdminController extends Controller {
             $stmt = $this->db->prepare("DELETE FROM users WHERE id = ? AND role = 'PETUGAS'");
             $stmt->execute([$id]);
             
-            $_SESSION['success'] = 'Petugas berhasil dihapus';
+            $this->json([
+                'success' => true,
+                'message' => 'Petugas berhasil dihapus'
+            ]);
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menghapus petugas: ' . $e->getMessage();
+            $this->json([
+                'success' => false,
+                'message' => 'Gagal menghapus petugas: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/admin/petugas');
     }
 }

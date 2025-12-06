@@ -1,38 +1,73 @@
 <?php
 /**
  * Public Pages Controller
- * Handle landing page, about page, etc
+ * Handle API info endpoints
  */
 
 class PageController extends Controller {
     
     /**
-     * Landing page
+     * API info / root endpoint
      */
     public function index() {
-        $this->view('pages/index');
+        return $this->json([
+            'success' => true,
+            'message' => 'SiPEMAU API v1.0',
+            'data' => [
+                'name' => 'Sistem Pengaduan Mahasiswa Universitas Lampung',
+                'version' => '1.0.0',
+                'endpoints' => [
+                    'auth' => '/register, /login, /logout',
+                    'mahasiswa' => '/mahasiswa/*',
+                    'petugas' => '/petugas/*',
+                    'admin' => '/admin/*'
+                ],
+                'documentation' => BASE_URL . '/docs'
+            ]
+        ]);
     }
     
     /**
-     * About page
+     * API documentation info
      */
     public function about() {
-        $this->view('pages/about');
+        return $this->json([
+            'success' => true,
+            'message' => 'API Documentation',
+            'data' => [
+                'description' => 'REST API untuk Sistem Pengaduan Mahasiswa Universitas Lampung',
+                'features' => [
+                    'Authentication & Authorization',
+                    'Complaint Management',
+                    'Role-based Access Control',
+                    'File Upload Support'
+                ],
+                'tech_stack' => [
+                    'PHP Native',
+                    'MySQL/MariaDB',
+                    'Session-based Auth'
+                ]
+            ]
+        ]);
     }
     
     /**
-     * 404 Page
+     * 404 Not Found
      */
     public function notFound() {
-        http_response_code(404);
-        $this->view('pages/404');
+        return $this->json([
+            'success' => false,
+            'message' => 'Endpoint tidak ditemukan'
+        ], 404);
     }
     
     /**
-     * Unauthorized page
+     * 403 Unauthorized
      */
     public function unauthorized() {
-        http_response_code(403);
-        $this->view('pages/403');
+        return $this->json([
+            'success' => false,
+            'message' => 'Akses ditolak. Anda tidak memiliki izin untuk mengakses resource ini.'
+        ], 403);
     }
 }

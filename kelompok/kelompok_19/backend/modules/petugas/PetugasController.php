@@ -43,9 +43,12 @@ class PetugasController extends Controller {
         $stmt->execute([$_SESSION['unit_id']]);
         $recentComplaints = $stmt->fetchAll();
         
-        $this->view('petugas/dashboard', [
-            'stats' => $stats,
-            'recentComplaints' => $recentComplaints
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'stats' => $stats,
+                'recent_complaints' => $recentComplaints
+            ]
         ]);
     }
     
@@ -108,13 +111,22 @@ class PetugasController extends Controller {
         $stmt->execute([$_SESSION['unit_id']]);
         $categories = $stmt->fetchAll();
         
-        $this->view('petugas/complaints', [
-            'complaints' => $complaints,
-            'categories' => $categories,
-            'currentPage' => $page,
-            'totalPages' => $totalPages,
-            'status' => $status,
-            'selectedCategory' => $category
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'complaints' => $complaints,
+                'categories' => $categories,
+                'pagination' => [
+                    'current_page' => $page,
+                    'total_pages' => $totalPages,
+                    'total_items' => $totalComplaints,
+                    'per_page' => ITEMS_PER_PAGE
+                ],
+                'filter' => [
+                    'status' => $status,
+                    'category' => $category
+                ]
+            ]
         ]);
     }
     
@@ -135,8 +147,10 @@ class PetugasController extends Controller {
         $complaint = $stmt->fetch();
         
         if (!$complaint) {
-            $_SESSION['error'] = 'Pengaduan tidak ditemukan';
-            $this->redirect('/petugas/complaints');
+            return $this->json([
+                'success' => false,
+                'message' => 'Pengaduan tidak ditemukan'
+            ], 404);
         }
         
         // Get notes
@@ -151,9 +165,12 @@ class PetugasController extends Controller {
         $stmt->execute([$id]);
         $notes = $stmt->fetchAll();
         
-        $this->view('petugas/detail', [
-            'complaint' => $complaint,
-            'notes' => $notes
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'complaint' => $complaint,
+                'notes' => $notes
+            ]
         ]);
     }
     
@@ -167,8 +184,10 @@ class PetugasController extends Controller {
         // Validate status
         $allowedStatuses = ['MENUNGGU', 'DIPROSES', 'SELESAI'];
         if (!in_array($status, $allowedStatuses)) {
-            $_SESSION['error'] = 'Status tidak valid';
-            $this->redirect('/petugas/complaints/' . $complaintId);
+            return $this->json([
+                'success' => false,
+                'message' => 'Status tidak valid'
+            ], 400);
         }
         
         // Verify complaint belongs to this unit
@@ -181,8 +200,10 @@ class PetugasController extends Controller {
         $stmt->execute([$complaintId, $_SESSION['unit_id']]);
         
         if (!$stmt->fetch()) {
-            $_SESSION['error'] = 'Pengaduan tidak ditemukan';
-            $this->redirect('/petugas/complaints');
+            return $this->json([
+                'success' => false,
+                'message' => 'Pengaduan tidak ditemukan'
+            ], 404);
         }
         
         try {
@@ -196,13 +217,21 @@ class PetugasController extends Controller {
             ");
             $stmt->execute([$status, $resolvedAt, $complaintId]);
             
-            $_SESSION['success'] = 'Status berhasil diperbarui';
+            return $this->json([
+                'success' => true,
+                'message' => 'Status berhasil diperbarui',
+                'data' => [
+                    'status' => $status,
+                    'resolved_at' => $resolvedAt
+                ]
+            ]);
             
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal memperbarui status: ' . $e->getMessage();
+            return $this->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui status: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/petugas/complaints/' . $complaintId);
     }
     
     /**
@@ -213,8 +242,10 @@ class PetugasController extends Controller {
         $note = sanitize($this->post('note'));
         
         if (empty($note)) {
-            $_SESSION['error'] = 'Catatan tidak boleh kosong';
-            $this->redirect('/petugas/complaints/' . $complaintId);
+            return $this->json([
+                'success' => false,
+                'message' => 'Catatan tidak boleh kosong'
+            ], 400);
         }
         
         // Verify complaint belongs to this unit
@@ -227,8 +258,10 @@ class PetugasController extends Controller {
         $stmt->execute([$complaintId, $_SESSION['unit_id']]);
         
         if (!$stmt->fetch()) {
-            $_SESSION['error'] = 'Pengaduan tidak ditemukan';
-            $this->redirect('/petugas/complaints');
+            return $this->json([
+                'success' => false,
+                'message' => 'Pengaduan tidak ditemukan'
+            ], 404);
         }
         
         try {
@@ -238,12 +271,21 @@ class PetugasController extends Controller {
             ");
             $stmt->execute([$complaintId, $_SESSION['user_id'], $note]);
             
-            $_SESSION['success'] = 'Catatan berhasil ditambahkan';
+            $noteId = $this->db->lastInsertId();
+            
+            return $this->json([
+                'success' => true,
+                'message' => 'Catatan berhasil ditambahkan',
+                'data' => [
+                    'note_id' => $noteId
+                ]
+            ], 201);
             
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Gagal menambahkan catatan: ' . $e->getMessage();
+            return $this->json([
+                'success' => false,
+                'message' => 'Gagal menambahkan catatan: ' . $e->getMessage()
+            ], 500);
         }
-        
-        $this->redirect('/petugas/complaints/' . $complaintId);
     }
 }

@@ -41,9 +41,12 @@ class MahasiswaController extends Controller {
         $stmt->execute([$_SESSION['user_id']]);
         $recentComplaints = $stmt->fetchAll();
         
-        $this->view('mahasiswa/dashboard', [
-            'stats' => $stats,
-            'recentComplaints' => $recentComplaints
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'stats' => $stats,
+                'recent_complaints' => $recentComplaints
+            ]
         ]);
     }
     
@@ -91,11 +94,20 @@ class MahasiswaController extends Controller {
         $stmt->execute($params);
         $complaints = $stmt->fetchAll();
         
-        $this->view('mahasiswa/complaints', [
-            'complaints' => $complaints,
-            'currentPage' => $page,
-            'totalPages' => $totalPages,
-            'status' => $status
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'complaints' => $complaints,
+                'pagination' => [
+                    'current_page' => $page,
+                    'total_pages' => $totalPages,
+                    'total_items' => $totalComplaints,
+                    'per_page' => ITEMS_PER_PAGE
+                ],
+                'filter' => [
+                    'status' => $status
+                ]
+            ]
         ]);
     }
     
@@ -114,8 +126,10 @@ class MahasiswaController extends Controller {
         $complaint = $stmt->fetch();
         
         if (!$complaint) {
-            $_SESSION['error'] = 'Pengaduan tidak ditemukan';
-            $this->redirect('/mahasiswa/complaints');
+            return $this->json([
+                'success' => false,
+                'message' => 'Pengaduan tidak ditemukan'
+            ], 404);
         }
         
         // Get notes
@@ -130,16 +144,19 @@ class MahasiswaController extends Controller {
         $stmt->execute([$id]);
         $notes = $stmt->fetchAll();
         
-        $this->view('mahasiswa/detail', [
-            'complaint' => $complaint,
-            'notes' => $notes
+        return $this->json([
+            'success' => true,
+            'data' => [
+                'complaint' => $complaint,
+                'notes' => $notes
+            ]
         ]);
     }
     
     /**
-     * Show create complaint form
+     * Get active categories for complaint form
      */
-    public function showCreateComplaint() {
+    public function getCategories() {
         // Get active categories
         $stmt = $this->db->query("
             SELECT c.*, u.name as unit_name 
@@ -150,8 +167,9 @@ class MahasiswaController extends Controller {
         ");
         $categories = $stmt->fetchAll();
         
-        $this->view('mahasiswa/create', [
-            'categories' => $categories
+        return $this->json([
+            'success' => true,
+            'data' => $categories
         ]);
     }
     
@@ -170,8 +188,11 @@ class MahasiswaController extends Controller {
         if (empty($categoryId)) $errors[] = 'Kategori harus dipilih';
         
         if (!empty($errors)) {
-            $_SESSION['error'] = implode('<br>', $errors);
-            $this->redirect('/mahasiswa/complaints/create');
+            return $this->json([
+                'success' => false,
+                'message' => 'Validasi gagal',
+                'errors' => $errors
+            ], 400);
         }
         
         try {
@@ -194,15 +215,24 @@ class MahasiswaController extends Controller {
                 $evidencePath
             ]);
             
-            $_SESSION['success'] = 'Pengaduan berhasil dikirim';
-            $this->redirect('/mahasiswa/complaints');
+            $complaintId = $this->db->lastInsertId();
+            
+            return $this->json([
+                'success' => true,
+                'message' => 'Pengaduan berhasil dikirim',
+                'data' => [
+                    'complaint_id' => $complaintId
+                ]
+            ], 201);
             
         } catch (Exception $e) {
             if (isset($evidencePath)) {
                 deleteFile($evidencePath);
             }
-            $_SESSION['error'] = 'Gagal mengirim pengaduan: ' . $e->getMessage();
-            $this->redirect('/mahasiswa/complaints/create');
+            return $this->json([
+                'success' => false,
+                'message' => 'Gagal mengirim pengaduan: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
