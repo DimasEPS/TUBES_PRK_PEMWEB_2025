@@ -8,15 +8,13 @@ SET time_zone = '+00:00';
 CREATE DATABASE IF NOT EXISTS sipemau_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE sipemau_db;
 
--- ENUMs mapped to MySQL ENUM for strict role/status handling
--- Dropping first to avoid conflicts during rerun
 DROP TABLE IF EXISTS complaint_notes;
 DROP TABLE IF EXISTS complaints;
 DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS units;
-DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS petugas;
+DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS mahasiswa;
+DROP TABLE IF EXISTS units;
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
