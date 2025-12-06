@@ -6,25 +6,22 @@
 
 class Controller {
     protected $db;
+    protected $parsedInput = null;
     
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
+        $this->parseInput();
     }
     
     /**
-     * Load view file (not used for API, kept for compatibility)
+     * Parse input for PUT/PATCH/DELETE requests
      */
-    protected function view($viewPath, $data = []) {
-        // Return JSON instead of loading view files
-        // Since this is an API backend without frontend views
-        http_response_code(501);
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'View rendering not implemented. This is an API backend.',
-            'requested_view' => $viewPath
-        ]);
-        exit;
+    private function parseInput() {
+        $method = $_SERVER['REQUEST_METHOD'];
+        if (in_array($method, ['PUT', 'PATCH', 'DELETE'])) {
+            $input = file_get_contents('php://input');
+            parse_str($input, $this->parsedInput);
+        }
     }
     
     /**
@@ -56,6 +53,16 @@ class Controller {
     }
     
     /**
+     * Get PUT/PATCH/DELETE data from parsed input
+     */
+    protected function input($key = null, $default = null) {
+        if ($key === null) {
+            return $this->parsedInput !== null ? $this->parsedInput : [];
+        }
+        return isset($this->parsedInput[$key]) ? $this->parsedInput[$key] : $default;
+    }
+    
+    /**
      * Get GET data
      */
     protected function get($key = null, $default = null) {
@@ -73,15 +80,23 @@ class Controller {
     }
     
     /**
-     * Check if user is logged in
+     * Check if user is logged in 
      */
     protected function requireAuth($role = null) {
         if (!isset($_SESSION['user_id'])) {
-            $this->redirect('/login');
+            $this->json([
+                'success' => false,
+                'message' => 'Unauthorized - Please login first'
+            ], 401);
         }
         
         if ($role !== null && $_SESSION['role'] !== $role) {
-            $this->redirect('/unauthorized');
+            $this->json([
+                'success' => false,
+                'message' => 'Forbidden - Insufficient permissions',
+                'required_role' => $role,
+                'your_role' => $_SESSION['role'] ?? null
+            ], 403);
         }
     }
 }

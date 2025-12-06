@@ -135,7 +135,7 @@ class PetugasController extends Controller {
      */
     public function detailComplaint($id) {
         $stmt = $this->db->prepare("
-            SELECT c.*, cat.name as category_name, u.name as mahasiswa_name, 
+            SELECT c.*, cat.name as category_name, mu.name as mahasiswa_name, 
                    m.nim, mu.email as mahasiswa_email
             FROM complaints c
             JOIN categories cat ON c.category_id = cat.id
@@ -177,9 +177,8 @@ class PetugasController extends Controller {
     /**
      * Update complaint status
      */
-    public function updateStatus() {
-        $complaintId = $this->post('complaint_id');
-        $status = $this->post('status');
+    public function updateStatus($complaintId) {
+        $status = $this->input('status');
         
         // Validate status
         $allowedStatuses = ['MENUNGGU', 'DIPROSES', 'SELESAI'];
@@ -237,8 +236,7 @@ class PetugasController extends Controller {
     /**
      * Add note to complaint
      */
-    public function addNote() {
-        $complaintId = $this->post('complaint_id');
+    public function addNote($complaintId) {
         $note = sanitize($this->post('note'));
         
         if (empty($note)) {

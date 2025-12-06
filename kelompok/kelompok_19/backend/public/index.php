@@ -121,7 +121,7 @@ $router->get('/mahasiswa/complaints/categories', function() {
     $controller->getCategories();
 });
 
-$router->post('/mahasiswa/complaints/create', function() {
+$router->post('/mahasiswa/complaints', function() {
     $controller = new MahasiswaController();
     $controller->storeComplaint();
 });
@@ -147,14 +147,14 @@ $router->get('/petugas/complaints/:id', function($id) {
     $controller->detailComplaint($id);
 });
 
-$router->post('/petugas/complaints/update-status', function() {
+$router->patch('/petugas/complaints/:id/status', function($id) {
     $controller = new PetugasController();
-    $controller->updateStatus();
+    $controller->updateStatus($id);
 });
 
-$router->post('/petugas/complaints/add-note', function() {
+$router->post('/petugas/complaints/:id/notes', function($id) {
     $controller = new PetugasController();
-    $controller->addNote();
+    $controller->addNote($id);
 });
 
 // ==================== ADMIN ROUTES ====================
@@ -169,17 +169,17 @@ $router->get('/admin/units', function() {
     $controller->listUnits();
 });
 
-$router->post('/admin/units/create', function() {
+$router->post('/admin/units', function() {
     $controller = new AdminController();
     $controller->createUnit();
 });
 
-$router->post('/admin/units/update/:id', function($id) {
+$router->put('/admin/units/:id', function($id) {
     $controller = new AdminController();
     $controller->updateUnit($id);
 });
 
-$router->post('/admin/units/delete/:id', function($id) {
+$router->delete('/admin/units/:id', function($id) {
     $controller = new AdminController();
     $controller->deleteUnit($id);
 });
@@ -190,17 +190,17 @@ $router->get('/admin/categories', function() {
     $controller->listCategories();
 });
 
-$router->post('/admin/categories/create', function() {
+$router->post('/admin/categories', function() {
     $controller = new AdminController();
     $controller->createCategory();
 });
 
-$router->post('/admin/categories/update/:id', function($id) {
+$router->put('/admin/categories/:id', function($id) {
     $controller = new AdminController();
     $controller->updateCategory($id);
 });
 
-$router->post('/admin/categories/delete/:id', function($id) {
+$router->delete('/admin/categories/:id', function($id) {
     $controller = new AdminController();
     $controller->deleteCategory($id);
 });
@@ -211,17 +211,17 @@ $router->get('/admin/petugas', function() {
     $controller->listPetugas();
 });
 
-$router->post('/admin/petugas/create', function() {
+$router->post('/admin/petugas', function() {
     $controller = new AdminController();
     $controller->createPetugas();
 });
 
-$router->post('/admin/petugas/update/:id', function($id) {
+$router->put('/admin/petugas/:id', function($id) {
     $controller = new AdminController();
     $controller->updatePetugas($id);
 });
 
-$router->post('/admin/petugas/delete/:id', function($id) {
+$router->delete('/admin/petugas/:id', function($id) {
     $controller = new AdminController();
     $controller->deletePetugas($id);
 });

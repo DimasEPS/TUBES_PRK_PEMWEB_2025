@@ -112,9 +112,9 @@ class AdminController extends Controller {
      * Update unit
      */
     public function updateUnit($id) {
-        $name = sanitize($this->post('name'));
-        $description = sanitize($this->post('description'));
-        $isActive = $this->post('is_active', 1);
+        $name = sanitize($this->input('name'));
+        $description = sanitize($this->input('description'));
+        $isActive = $this->input('is_active', 1);
         
         if (empty($name)) {
             $this->json([
@@ -251,10 +251,10 @@ class AdminController extends Controller {
      * Update category
      */
     public function updateCategory($id) {
-        $name = sanitize($this->post('name'));
-        $description = sanitize($this->post('description'));
-        $unitId = $this->post('unit_id');
-        $isActive = $this->post('is_active', 1);
+        $name = sanitize($this->input('name'));
+        $description = sanitize($this->input('description'));
+        $unitId = $this->input('unit_id');
+        $isActive = $this->input('is_active', 1);
         
         $errors = [];
         if (empty($name)) $errors['name'] = 'Nama kategori harus diisi';
@@ -428,11 +428,11 @@ class AdminController extends Controller {
      * Update petugas
      */
     public function updatePetugas($id) {
-        $name = sanitize($this->post('name'));
-        $email = sanitize($this->post('email'));
-        $password = $this->post('password');
-        $unitId = $this->post('unit_id');
-        $jabatan = sanitize($this->post('jabatan'));
+        $name = sanitize($this->input('name'));
+        $email = sanitize($this->input('email'));
+        $password = $this->input('password');
+        $unitId = $this->input('unit_id');
+        $jabatan = sanitize($this->input('jabatan'));
         
         // Validation
         $errors = [];

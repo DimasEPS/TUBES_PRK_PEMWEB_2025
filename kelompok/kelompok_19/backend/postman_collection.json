@@ -31,27 +31,27 @@
               "urlencoded": [
                 {
                   "key": "name",
-                  "value": "John Doe",
+                  "value": "New Student",
                   "type": "text"
                 },
                 {
                   "key": "nim",
-                  "value": "2011521001",
+                  "value": "2011521003",
                   "type": "text"
                 },
                 {
                   "key": "email",
-                  "value": "john@student.unila.ac.id",
+                  "value": "newstudent@student.unila.ac.id",
                   "type": "text"
                 },
                 {
                   "key": "password",
-                  "value": "password123",
+                  "value": "password",
                   "type": "text"
                 },
                 {
                   "key": "confirm_password",
-                  "value": "password123",
+                  "value": "password",
                   "type": "text"
                 }
               ]
@@ -79,8 +79,9 @@
               "urlencoded": [
                 {
                   "key": "email",
-                  "value": "admin@sipemau.ac.id",
-                  "type": "text"
+                  "value": "john@student.unila.ac.id",
+                  "type": "text",
+                  "description": "Mahasiswa with 2 complaints"
                 },
                 {
                   "key": "password",
@@ -209,9 +210,9 @@
               ]
             },
             "url": {
-              "raw": "{{baseUrl}}/mahasiswa/complaints/create",
+              "raw": "{{baseUrl}}/mahasiswa/complaints",
               "host": ["{{baseUrl}}"],
-              "path": ["mahasiswa", "complaints", "create"]
+              "path": ["mahasiswa", "complaints"]
             },
             "description": "Create new complaint with optional file upload"
           }
@@ -277,7 +278,7 @@
         {
           "name": "Update Status",
           "request": {
-            "method": "POST",
+            "method": "PATCH",
             "header": [
               {
                 "key": "Content-Type",
@@ -288,11 +289,6 @@
               "mode": "urlencoded",
               "urlencoded": [
                 {
-                  "key": "complaint_id",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
                   "key": "status",
                   "value": "DIPROSES",
                   "type": "text",
@@ -301,9 +297,9 @@
               ]
             },
             "url": {
-              "raw": "{{baseUrl}}/petugas/complaints/update-status",
+              "raw": "{{baseUrl}}/petugas/complaints/1/status",
               "host": ["{{baseUrl}}"],
-              "path": ["petugas", "complaints", "update-status"]
+              "path": ["petugas", "complaints", "1", "status"]
             },
             "description": "Update complaint status"
           }
@@ -322,11 +318,6 @@
               "mode": "urlencoded",
               "urlencoded": [
                 {
-                  "key": "complaint_id",
-                  "value": "1",
-                  "type": "text"
-                },
-                {
                   "key": "note",
                   "value": "Sedang kami proses, mohon ditunggu",
                   "type": "text"
@@ -334,9 +325,9 @@
               ]
             },
             "url": {
-              "raw": "{{baseUrl}}/petugas/complaints/add-note",
+              "raw": "{{baseUrl}}/petugas/complaints/1/notes",
               "host": ["{{baseUrl}}"],
-              "path": ["petugas", "complaints", "add-note"]
+              "path": ["petugas", "complaints", "1", "notes"]
             },
             "description": "Add follow-up note to complaint"
           }
@@ -400,16 +391,16 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/units/create",
+                  "raw": "{{baseUrl}}/admin/units",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "units", "create"]
+                  "path": ["admin", "units"]
                 }
               }
             },
             {
               "name": "Update Unit",
               "request": {
-                "method": "POST",
+                "method": "PUT",
                 "header": [],
                 "body": {
                   "mode": "urlencoded",
@@ -432,21 +423,21 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/units/update/1",
+                  "raw": "{{baseUrl}}/admin/units/1",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "units", "update", "1"]
+                  "path": ["admin", "units", "1"]
                 }
               }
             },
             {
               "name": "Delete Unit",
               "request": {
-                "method": "POST",
+                "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/units/delete/1",
+                  "raw": "{{baseUrl}}/admin/units/1",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "units", "delete", "1"]
+                  "path": ["admin", "units", "1"]
                 }
               }
             }
@@ -498,16 +489,16 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/categories/create",
+                  "raw": "{{baseUrl}}/admin/categories",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "categories", "create"]
+                  "path": ["admin", "categories"]
                 }
               }
             },
             {
               "name": "Update Category",
               "request": {
-                "method": "POST",
+                "method": "PUT",
                 "header": [],
                 "body": {
                   "mode": "urlencoded",
@@ -535,21 +526,21 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/categories/update/1",
+                  "raw": "{{baseUrl}}/admin/categories/1",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "categories", "update", "1"]
+                  "path": ["admin", "categories", "1"]
                 }
               }
             },
             {
               "name": "Delete Category",
               "request": {
-                "method": "POST",
+                "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/categories/delete/1",
+                  "raw": "{{baseUrl}}/admin/categories/1",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "categories", "delete", "1"]
+                  "path": ["admin", "categories", "1"]
                 }
               }
             }
@@ -606,16 +597,16 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/petugas/create",
+                  "raw": "{{baseUrl}}/admin/petugas",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "petugas", "create"]
+                  "path": ["admin", "petugas"]
                 }
               }
             },
             {
               "name": "Update Petugas",
               "request": {
-                "method": "POST",
+                "method": "PUT",
                 "header": [],
                 "body": {
                   "mode": "urlencoded",
@@ -649,21 +640,21 @@
                   ]
                 },
                 "url": {
-                  "raw": "{{baseUrl}}/admin/petugas/update/2",
+                  "raw": "{{baseUrl}}/admin/petugas/2",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "petugas", "update", "2"]
+                  "path": ["admin", "petugas", "2"]
                 }
               }
             },
             {
               "name": "Delete Petugas",
               "request": {
-                "method": "POST",
+                "method": "DELETE",
                 "header": [],
                 "url": {
-                  "raw": "{{baseUrl}}/admin/petugas/delete/2",
+                  "raw": "{{baseUrl}}/admin/petugas/2",
                   "host": ["{{baseUrl}}"],
-                  "path": ["admin", "petugas", "delete", "2"]
+                  "path": ["admin", "petugas", "2"]
                 }
               }
             }
