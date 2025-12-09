@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Pengaduan Baru - SiPEMAU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+    <div class="flex h-screen bg-gray-100">
+
+        <aside class="w-64 bg-white shadow-md flex flex-col">
+            <div class="p-4 flex items-center border-b">
+                <span class="text-2xl font-bold text-blue-600 mr-2">S</span>
+                <div>
+                    <p class="text-sm font-semibold">SiPEMAU</p>
+                    <p class="text-xs text-gray-500">Universitas Lampung</p>
+                </div>
+            </div>
+            <nav class="flex-grow p-4">
+                <a href="#" class="flex items-center p-3 mb-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 8v8m-4-8v8m-4-8v8m6-11H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z" />
+                    </svg>
+                    Pengaduan Saya
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 overflow-x-hidden overflow-y-auto">
+
+            <header class="flex justify-end items-center p-4 bg-white shadow-md">
+                <div class="flex items-center space-x-4">
+                    <span class="text-gray-700 font-medium">Ahmad Fauzi</span>
+                    <span class="text-sm text-gray-500 bg-gray-200 px-3 py-1 rounded-full">MAHASISWA</span>
+                    <button class="flex items-center text-red-500 hover:text-red-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Keluar
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-6">
+                
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Buat Pengaduan Baru</h1>
+                <p class="text-gray-600 mb-6">Laporkan masalah atau usulan Anda dengan mengisi detail formulir di bawah.</p>
+
+                <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+                    
+                    <form action="#" method="POST" enctype="multipart/form-data">
+                        
+                        <div class="mb-6">
+                            <label for="judul" class="block text-sm font-medium text-gray-700 mb-1">Judul Pengaduan</label>
+                            <input type="text" id="judul" name="judul" placeholder="Contoh: AC Ruangan Kuliah Mati, Koneksi Internet Lambat" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label for="kategori" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                                <select id="kategori" name="kategori" required class="w-full border border-gray-300 p-3 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="" disabled selected>Pilih Kategori</option>
+                                    <option value="fasilitas">Fasilitas</option>
+                                    <option value="akademik">Akademik</option>
+                                    <option value="keuangan">Keuangan</option>
+                                    <option value="lain-lain">Lain-lain</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="lokasi" class="block text-sm font-medium text-gray-700 mb-1">Lokasi/Unit Terkait</label>
+                                <input type="text" id="lokasi" name="lokasi" placeholder="Contoh: Gedung A Lantai 3, Fakultas Teknik" required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">Isi Pengaduan Detail</label>
+                            <textarea id="deskripsi" name="deskripsi" rows="6" placeholder="Jelaskan masalah yang Anda alami secara rinci dan sertakan informasi pendukung jika ada." required class="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <label for="lampiran" class="block text-sm font-medium text-gray-700 mb-1">Lampiran (Foto/Dokumen Pendukung - Opsional)</label>
+                            <div class="flex items-center space-x-4">
+                                <label class="w-full flex items-center px-4 py-3 bg-white text-blue-600 rounded-lg shadow-md tracking-wide uppercase border border-blue-600 cursor-pointer hover:bg-blue-600 hover:text-white transition duration-200">
+                                    <svg class="w-6 h-6 mr-2" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                        <path d="M16.88 5.48c.5.5.5 1.32 0 1.82L10.5 13.68l-3.38-3.38c-.5-.5-.5-1.32 0-1.82.5-.5 1.32-.5 1.82 0l2.56 2.56 5.38-5.38c.5-.5 1.32-.5 1.82 0z"/>
+                                    </svg>
+                                    <span class="text-sm leading-normal">Pilih File (Max. 5MB)</span>
+                                    <input type='file' id="lampiran" name="lampiran" class="hidden">
+                                </label>
+                            </div>
+                            <p class="mt-2 text-xs text-gray-500">Format: JPG, PNG, PDF. Maksimal 1 file.</p>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 font-medium transition duration-200">
+                                Batal
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-md transition duration-200">
+                                Kirim Pengaduan
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+                
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
