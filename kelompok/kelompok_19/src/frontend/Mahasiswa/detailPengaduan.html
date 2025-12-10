@@ -1,153 +1,257 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pengaduan #1 - SiPEMAU</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Pengaduan - SiPEMAU</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "brand-blue": "#0f3573",
+              "brand-yellow": "#f6c101",
+              "brand-green": "#1f8e49",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="stylesheet" href="../css/index.css" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-white shadow-md flex flex-col">
+        <div class="p-4 flex items-center border-b">
+          <div
+            class="w-10 h-10 bg-brand-blue text-white rounded-lg flex items-center justify-center font-bold text-lg"
+          >
+            S
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-bold text-brand-blue">SiPEMAU</p>
+            <p class="text-xs text-gray-500">Universitas Lampung</p>
+          </div>
+        </div>
+        <nav class="flex-grow p-4">
+          <a
+            href="dashboardMahasiswa.html"
+            class="flex items-center p-3 mb-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+              />
+            </svg>
+            Dashboard
+          </a>
+          <a
+            href="pengaduan.html"
+            class="flex items-center p-3 rounded-lg bg-blue-100 text-brand-blue font-semibold"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 mr-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M16 8v8m-4-8v8m-4-8v8m6-11H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z"
+              />
+            </svg>
+            Pengaduan Saya
+          </a>
+        </nav>
+      </aside>
 
-    <div class="flex h-screen bg-gray-100">
+      <!-- Main Content -->
+      <main class="flex-1 overflow-x-hidden overflow-y-auto">
+        <!-- Header -->
+        <header
+          class="flex justify-between items-center p-4 bg-white shadow-sm border-b"
+        >
+          <h1 class="text-2xl font-bold text-brand-blue">Detail Pengaduan</h1>
+          <div class="flex items-center space-x-4">
+            <span id="userName" class="text-gray-700 font-medium"
+              >Loading...</span
+            >
+            <span
+              class="text-sm text-white bg-brand-blue px-3 py-1 rounded-full font-medium"
+              >MAHASISWA</span
+            >
+            <button
+              onclick="logout()"
+              class="flex items-center text-red-500 hover:text-red-700 font-medium"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 mr-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              Keluar
+            </button>
+          </div>
+        </header>
 
-        <aside class="w-64 bg-white shadow-md flex flex-col">
-            <div class="p-4 flex items-center border-b">
-                <span class="text-2xl font-bold text-blue-600 mr-2">S</span>
-                <div>
-                    <p class="text-sm font-semibold">SiPEMAU</p>
-                    <p class="text-xs text-gray-500">Universitas Lampung</p>
-                </div>
+        <!-- Content -->
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <a
+                href="pengaduan.html"
+                class="flex items-center text-brand-blue hover:text-blue-800 mb-3 font-medium"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 mr-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                  />
+                </svg>
+                Kembali
+              </a>
+              <p id="complaintId" class="text-gray-600 text-sm">Memuat...</p>
             </div>
-            <nav class="flex-grow p-4">
-                <a href="dashboardMahasiswa.html" class="flex items-center p-3 mb-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                    </svg>
-                    Dashboard
-                </a>
-                <a href="pengaduan.html" class="flex items-center p-3 rounded-lg bg-blue-100 text-blue-700 font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 8v8m-4-8v8m-4-8v8m6-11H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2z" />
-                    </svg>
-                    Pengaduan Saya
-                </a>
-            </nav>
-        </aside>
+            <span
+              id="statusBadge"
+              class="text-md font-bold px-4 py-2 rounded-lg"
+              >Loading...</span
+            >
+          </div>
 
-        <main class="flex-1 overflow-x-hidden overflow-y-auto">
+          <!-- Complaint Info -->
+          <div
+            class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-6"
+          >
+            <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">
+              Informasi Pengaduan
+            </h2>
 
-            <header class="flex justify-end items-center p-4 bg-white shadow-md">
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-700 font-medium">Ahmad Fauzi</span>
-                    <span class="text-sm text-gray-500 bg-gray-200 px-3 py-1 rounded-full">MAHASISWA</span>
-                    <button class="flex items-center text-red-500 hover:text-red-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
-                        Keluar
-                    </button>
-                </div>
-            </header>
-
-            <div class="p-6">
-                
-                <div class="flex justify-between items-start mb-6">
-                    <div>
-                        <a href="pengaduan.html" class="flex items-center text-blue-600 hover:text-blue-800 mb-2 font-medium">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                            </svg>
-                            Kembali
-                        </a>
-                        <h1 class="text-3xl font-bold text-gray-800">Detail Pengaduan</h1>
-                        <p class="text-gray-600">ID Pengaduan: #1</p>
-                    </div>
-                    <span class="bg-blue-800 text-white text-md font-bold px-4 py-2 rounded-lg self-start">DIPROSES</span>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
-                    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-4">Informasi Pengaduan</h2>
-                    
-                    <div class="mb-4">
-                        <p class="text-sm text-gray-500">Judul</p>
-                        <p class="text-lg font-medium text-gray-900">Fasilitas Lab Komputer Rusak</p>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-4 mb-6">
-                        <div>
-                            <p class="text-sm text-gray-500">Kategori</p>
-                            <p class="text-base text-gray-900">Fasilitas</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Tanggal Dibuat</p>
-                            <p class="text-base text-gray-900">2025-12-05 10:30</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">Pelapor</p>
-                            <p class="text-base text-gray-900">Ahmad Fauzi</p>
-                            <p class="text-xs text-gray-600">2011021001</p>
-                        </div>
-                    </div>
-
-                    <div class="mb-6">
-                        <p class="text-sm text-gray-500 mb-1">Deskripsi</p>
-                        <p class="text-gray-800 bg-gray-50 p-3 rounded-lg border">Beberapa komputer di Lab Komputer Gedung H lantai 3 mengalami kerusakan. Keyboard dan mouse tidak berfungsi dengan baik, sehingga mengganggu praktikum mahasiswa.</p>
-                    </div>
-
-                    <div>
-                        <p class="text-sm text-gray-500 mb-2">Bukti Pendukung</p>
-                        <div class="flex items-center justify-between p-3 border border-gray-300 rounded-lg max-w-sm bg-blue-50">
-                            <div class="flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                                </svg>
-                                <div>
-                                    <p class="text-sm font-medium text-gray-800">evidence_lab_computer.jpg</p>
-                                    <p class="text-xs text-gray-600">245 KB</p>
-                                </div>
-                            </div>
-                            <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Lihat</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow-lg">
-                    <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-6">Timeline Status</h2>
-                    
-                    <div class="relative pl-8">
-                        
-                        <div class="mb-8 relative">
-                            <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300 ml-3.5"></div>
-                            
-                            <div class="absolute -left-0.5 top-0 h-4 w-4 bg-yellow-500 rounded-full border-4 border-white"></div>
-                            
-                            <p class="text-sm text-gray-700 font-semibold inline-flex items-center">
-                                <span class="bg-yellow-500 text-white text-xs font-bold px-2 py-0.5 rounded mr-2">MENUNGGU</span> 
-                                2025-12-05 10:30
-                            </p>
-                            <p class="text-gray-800 mt-1 ml-4">Pengaduan telah diterima dan menunggu verifikasi</p>
-                        </div>
-
-                        <div class="mb-8 relative">
-                            <div class="absolute left-0 top-0 bottom-0 w-0.5 bg-blue-600 ml-3.5"></div> 
-
-                            <div class="absolute -left-0.5 top-0 h-4 w-4 bg-blue-600 rounded-full border-4 border-white"></div>
-                            
-                            <p class="text-sm text-gray-700 font-semibold inline-flex items-center">
-                                <span class="bg-blue-800 text-white text-xs font-bold px-2 py-0.5 rounded mr-2">DIPROSES</span> 
-                                2025-12-05 14:20
-                            </p>
-                            <p class="text-gray-800 mt-1 ml-4">Pengaduan sedang ditindaklanjuti oleh Unit Sarana & Prasarana. Tim teknisi telah melakukan pengecekan.</p>
-                        </div>
-
-                        <p class="text-gray-600 mt-4 border-t pt-4 ml-4">Pengaduan Anda sedang dalam proses penanganan. Kami akan memberikan update segera.</p>
-
-                    </div>
-                </div>
-
+            <div class="mb-6">
+              <p class="text-sm text-gray-500 mb-1">Judul</p>
+              <p id="complaintTitle" class="text-lg font-medium text-gray-900">
+                Memuat...
+              </p>
             </div>
-        </main>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Kategori</p>
+                <p id="complaintCategory" class="text-base text-gray-900">
+                  Memuat...
+                </p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Tanggal Dibuat</p>
+                <p id="complaintDate" class="text-base text-gray-900">
+                  Memuat...
+                </p>
+              </div>
+              <div>
+                <p class="text-sm text-gray-500 mb-1">Pelapor</p>
+                <p id="complaintUser" class="text-base text-gray-900">
+                  Memuat...
+                </p>
+                <p id="complaintNim" class="text-xs text-gray-600"></p>
+              </div>
+            </div>
+
+            <div class="mb-6">
+              <p class="text-sm text-gray-500 mb-2">Deskripsi</p>
+              <p
+                id="complaintDescription"
+                class="text-gray-800 bg-gray-50 p-4 rounded-lg border"
+              >
+                Memuat...
+              </p>
+            </div>
+
+            <div id="evidenceSection" style="display: none">
+              <p class="text-sm text-gray-500 mb-2">Bukti Pendukung</p>
+              <div
+                class="flex items-center justify-between p-3 border border-gray-300 rounded-lg max-w-sm bg-blue-50"
+              >
+                <div class="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6 text-brand-blue"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </svg>
+                  <div>
+                    <p
+                      id="evidenceName"
+                      class="text-sm font-medium text-gray-800"
+                    ></p>
+                  </div>
+                </div>
+                <a
+                  id="evidenceLink"
+                  href="#"
+                  target="_blank"
+                  class="text-brand-blue hover:text-blue-800 text-sm font-medium"
+                  >Lihat</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Timeline -->
+          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800 border-b pb-3 mb-6">
+              Timeline Status & Catatan
+            </h2>
+
+            <div id="timeline" class="relative pl-8">
+              <p class="text-gray-500 ml-4">Memuat timeline...</p>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
-</body>
+    <script src="../js/config.js"></script>
+    <script src="../js/utils/api.js"></script>
+    <script src="../js/utils/auth.js"></script>
+    <script src="../js/pages/detailPengaduan.js"></script>
+  </body>
 </html>
