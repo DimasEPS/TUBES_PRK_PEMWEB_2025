@@ -1,11 +1,516 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Welcome to the Frontend</h1>
-</body>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SiPEMAU – Sistem Pengaduan Mahasiswa Universitas Lampung</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "brand-blue": "#0f3573",
+              "brand-yellow": "#f6c101",
+              "brand-green": "#1f8e49",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white border-b sticky top-0 z-50 shadow-sm">
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center max-w-6xl"
+      >
+        <div class="flex items-center gap-3">
+          <div
+            class="w-10 h-10 bg-brand-blue text-white rounded-lg flex items-center justify-center font-bold text-lg"
+          >
+            S
+          </div>
+          <div>
+            <div class="font-bold text-brand-blue text-lg">SiPEMAU</div>
+            <div class="text-xs text-gray-500">Universitas Lampung</div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <a
+            href="login.html"
+            class="px-5 py-2 text-brand-blue hover:text-blue-900 font-medium"
+            >Masuk</a
+          >
+          <a
+            href="register.html"
+            class="px-5 py-2 bg-brand-blue text-white rounded-lg hover:bg-blue-900 font-semibold"
+            >Daftar</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Tentang SiPEMAU -->
+    <section
+      class="bg-gradient-to-br from-brand-blue via-blue-800 to-blue-900 text-white py-16"
+    >
+      <div class="container mx-auto px-4 text-center max-w-4xl">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Tentang SiPEMAU</h1>
+        <p class="text-lg mb-8 text-blue-100 leading-relaxed">
+          Sistem Pengaduan Mahasiswa Universitas Lampung yang dirancang untuk
+          meningkatkan kualitas layanan kampus melalui transparansi dan
+          responsivitas.
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <a
+            href="login.html"
+            class="px-8 py-3 bg-brand-yellow text-black rounded-lg hover:bg-yellow-500 font-semibold"
+          >
+            📝 Buat Laporan
+          </a>
+          <a
+            href="#tentang"
+            class="px-8 py-3 border-2 border-white rounded-lg hover:bg-white/10"
+          >
+            Tentang Kami
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Apa Itu SiPEMAU -->
+    <section id="tentang" class="py-16 bg-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 class="text-3xl font-bold mb-6 text-brand-blue">
+              Apa itu SiPEMAU?
+            </h2>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              <strong>SiPEMAU</strong> (Sistem Pengaduan Mahasiswa Universitas
+              Lampung) adalah platform digital terpercaya yang memfasilitasi
+              mahasiswa dalam menyampaikan keluhan, laporan, dan masalah terkait
+              layanan kampus.
+            </p>
+            <p class="text-gray-700 mb-4 leading-relaxed">
+              Sistem ini dibangun dengan teknologi web menggunakan HTML, CSS,
+              JavaScript Native, PHP Native, dan MySQL untuk menjamin keamanan
+              dan kecepatan penanganan aduan.
+            </p>
+            <p class="text-gray-700 leading-relaxed">
+              Dengan SiPEMAU, setiap pengaduan akan ditangani dengan proses yang
+              transparan, mulai dari pelaporan hingga penyelesaian, sehingga
+              dapat membantu universitas dalam meningkatkan mutu pelayanan
+              secara berkala.
+            </p>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-8">
+            <h3 class="text-xl font-bold mb-4 text-brand-blue">Visi & Misi</h3>
+            <div class="mb-6">
+              <h4 class="font-semibold mb-2 text-brand-blue">Visi</h4>
+              <p class="text-gray-700 text-sm">
+                Menjadi sistem aspirasi terdepan yang mendukung pelayanan
+                berkualitas untuk menciptakan lingkungan kampus yang nyaman dan
+                responsif.
+              </p>
+            </div>
+            <div>
+              <h4 class="font-semibold mb-2 text-brand-blue">Misi</h4>
+              <ul class="text-gray-700 text-sm space-y-2">
+                <li>
+                  ✓ Menerima dan memproses laporan/pengaduan secara berkala dan
+                  tepat
+                </li>
+                <li>
+                  ✓ Memfasilitasi transparansi dalam penanganan masalah
+                  mahasiswa
+                </li>
+                <li>✓ Meningkatkan respons terhadap permasalahan mahasiswa</li>
+                <li>
+                  ✓ Mempercepat proses penyelesaian dengan sistem terintegrasi
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Alur Kerja Sistem -->
+    <section id="alur" class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-3xl font-bold text-center mb-4 text-brand-blue">
+          Alur Kerja Sistem
+        </h2>
+        <p class="text-center text-gray-600 mb-12">
+          Proses pengaduan ditangani dengan sistem terstandardisasi untuk
+          memastikan tindak lanjut yang tepat
+        </p>
+
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+          <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+            <div
+              class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white"
+            >
+              1
+            </div>
+            <h3 class="font-bold text-lg mb-2">Mahasiswa Membuat Pengaduan</h3>
+            <p class="text-gray-600 text-sm">
+              Mahasiswa login ke sistem, kemudian mengisi form pengaduan dengan
+              lengkap & mengirim bukti pendukung jika diperlukan.
+            </p>
+          </div>
+          <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+            <div
+              class="w-12 h-12 bg-brand-yellow rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white"
+            >
+              2
+            </div>
+            <h3 class="font-bold text-lg mb-2">Pengaduan Diterima Sistem</h3>
+            <p class="text-gray-600 text-sm">
+              Setelah dikirim, pengaduan akan masuk ke status "MENUNGGU" dan
+              secara otomatis diteruskan ke unit yang sesuai dengan kategori
+              laporan.
+            </p>
+          </div>
+          <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+            <div
+              class="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white"
+            >
+              3
+            </div>
+            <h3 class="font-bold text-lg mb-2">Petugas Memproses Pengaduan</h3>
+            <p class="text-gray-600 text-sm">
+              Petugas unit terkait akan menerima pengaduan, status menjadi
+              "DIPROSES", dan memberikan catatan tindak lanjut secara real-time.
+            </p>
+          </div>
+          <div class="bg-white rounded-xl p-6 text-center shadow-sm">
+            <div
+              class="w-12 h-12 bg-brand-green rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold text-white"
+            >
+              4
+            </div>
+            <h3 class="font-bold text-lg mb-2">Penyelesaian & Feedback</h3>
+            <p class="text-gray-600 text-sm">
+              Setelah masalah teratasi, status menjadi "SELESAI" dengan catatan
+              final yang bisa dilihat. Mahasiswa dapat melihat hasil dan catatan
+              penanganan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fitur Utama -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-3xl font-bold text-center mb-12 text-brand-blue">
+          Fitur Utama
+        </h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-blue-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-blue text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              📝
+            </div>
+            <h3 class="font-bold text-lg mb-2">Pengaduan Online</h3>
+            <p class="text-gray-600 text-sm">
+              Buat pengaduan kapan saja, di mana saja dengan formulir yang mudah
+              dan lengkap dengan upload bukti pendukung.
+            </p>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-yellow text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              ⏱️
+            </div>
+            <h3 class="font-bold text-lg mb-2">Tracking Real-time</h3>
+            <p class="text-gray-600 text-sm">
+              Pantau status pengaduan Anda secara live dengan timeline lengkap
+              dari status "MENUNGGU" hingga "SELESAI".
+            </p>
+          </div>
+          <div class="bg-green-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-green text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              ✔️
+            </div>
+            <h3 class="font-bold text-lg mb-2">Transparan & Aman</h3>
+            <p class="text-gray-600 text-sm">
+              Setiap pengaduan akan ditangani dengan terbuka dan aman. Data Anda
+              terlindungi serta dapat melihat histori penangan.
+            </p>
+          </div>
+          <div class="bg-blue-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-blue text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              ⚡
+            </div>
+            <h3 class="font-bold text-lg mb-2">Respon Cepat</h3>
+            <p class="text-gray-600 text-sm">
+              Pengaduan langsung diteruskan ke unit terkait untuk segera
+              diproses dalam waktu 1-3 hari kerja.
+            </p>
+          </div>
+          <div class="bg-yellow-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-yellow text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              🏢
+            </div>
+            <h3 class="font-bold text-lg mb-2">Multi Unit</h3>
+            <p class="text-gray-600 text-sm">
+              Melayani semua unit kampus untuk pengaduan terkait Akademik,
+              Sarana, IT, Kemahasiswaan, Keuangan, dan Perpustakaan.
+            </p>
+          </div>
+          <div class="bg-green-50 rounded-xl p-6">
+            <div
+              class="w-14 h-14 bg-brand-green text-white rounded-lg flex items-center justify-center mb-4 text-2xl"
+            >
+              📢
+            </div>
+            <h3 class="font-bold text-lg mb-2">Notifikasi</h3>
+            <p class="text-gray-600 text-sm">
+              Dapatkan update otomatis setiap ada perubahan status pada
+              pengaduan Anda lewat notif.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Unit Layanan Terintegrasi -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <h2 class="text-3xl font-bold text-center mb-4 text-brand-blue">
+          Unit Layanan Terintegrasi
+        </h2>
+        <p class="text-center text-gray-600 mb-12">
+          SiPEMAU menghubungkan berbagai unit layanan di Universitas Lampung
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              🎓
+            </div>
+            <h3 class="font-semibold text-sm">Akademik</h3>
+            <p class="text-xs text-gray-500 mt-1">Perkuliahan, nilai, jadwal</p>
+          </div>
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              🏢
+            </div>
+            <h3 class="font-semibold text-sm">Sarana & Prasarana</h3>
+            <p class="text-xs text-gray-500 mt-1">Fasilitas kampus</p>
+          </div>
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              💻
+            </div>
+            <h3 class="font-semibold text-sm">IT & Sistem Informasi</h3>
+            <p class="text-xs text-gray-500 mt-1">Sistem & jaringan</p>
+          </div>
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              🎪
+            </div>
+            <h3 class="font-semibold text-sm">Kemahasiswaan</h3>
+            <p class="text-xs text-gray-500 mt-1">Organisasi, beasiswa</p>
+          </div>
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              💰
+            </div>
+            <h3 class="font-semibold text-sm">Keuangan</h3>
+            <p class="text-xs text-gray-500 mt-1">Pembayaran, SPP</p>
+          </div>
+          <div
+            class="bg-white rounded-lg p-4 text-center hover:shadow-md transition"
+          >
+            <div
+              class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-2 text-2xl"
+            >
+              📚
+            </div>
+            <h3 class="font-semibold text-sm">Perpustakaan</h3>
+            <p class="text-xs text-gray-500 mt-1">Koleksi, layanan</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Komitmen Kami -->
+    <section class="py-16 bg-brand-blue text-white">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <h2 class="text-3xl font-bold text-center mb-12">Komitmen Kami</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-black"
+            >
+              ✓
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">Responsif</h3>
+              <p class="text-blue-100 text-sm">
+                Merespons pengaduan dengan cepat dan profesional
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-black"
+            >
+              ✓
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">Transparan</h3>
+              <p class="text-blue-100 text-sm">
+                Proses yang jelas dan terbuka untuk pengguna
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-black"
+            >
+              ✓
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">Akuntabel</h3>
+              <p class="text-blue-100 text-sm">
+                Setiap proses dan penanganan dapat dipertanggungjawabkan
+              </p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div
+              class="w-10 h-10 bg-brand-yellow rounded-lg flex items-center justify-center flex-shrink-0 font-bold text-black"
+            >
+              ✓
+            </div>
+            <div>
+              <h3 class="font-bold mb-1">Berkelanjutan</h3>
+              <p class="text-blue-100 text-sm">
+                Terus mengembangkan kualitas layanan berdasarkan feedback
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-16 bg-white text-center">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <h2 class="text-3xl font-bold mb-4 text-brand-blue">
+          Mulai Gunakan SiPEMAU
+        </h2>
+        <p class="text-gray-600 mb-8 text-lg">
+          Daftar sekarang dan mulai gunakan layanan pengaduan kampus lebih mudah
+        </p>
+        <div class="flex gap-4 justify-center flex-wrap">
+          <a
+            href="register.html"
+            class="px-8 py-3 bg-brand-yellow text-black rounded-lg hover:bg-yellow-500 font-semibold text-lg"
+          >
+            Daftar Sekarang
+          </a>
+          <a
+            href="#tentang"
+            class="px-8 py-3 border-2 border-brand-blue text-brand-blue rounded-lg hover:bg-blue-50 font-semibold text-lg"
+          >
+            Tentang Kami
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="kontak" class="bg-brand-blue text-white py-12">
+      <div class="container mx-auto px-4 max-w-6xl">
+        <div class="grid md:grid-cols-3 gap-8 mb-8">
+          <div>
+            <div class="flex items-center gap-2 mb-4">
+              <div
+                class="w-10 h-10 bg-brand-yellow text-brand-blue rounded-lg flex items-center justify-center font-bold text-lg"
+              >
+                S
+              </div>
+              <div>
+                <div class="font-bold text-lg">SiPEMAU</div>
+                <div class="text-xs text-blue-200">Universitas Lampung</div>
+              </div>
+            </div>
+            <p class="text-blue-200 text-sm leading-relaxed">
+              Sistem Pengaduan Mahasiswa<br />Universitas Lampung
+            </p>
+          </div>
+          <div>
+            <h3 class="font-bold mb-3">Kontak</h3>
+            <div class="space-y-2 text-sm text-blue-200">
+              <p>Universitas Lampung</p>
+              <p>Jl. Prof. Dr. Ir. Sumantri Brojonegoro No.1</p>
+              <p>Bandar Lampung, Lampung 35145</p>
+              <p class="mt-3">Telepon: (0721) 123456</p>
+            </div>
+          </div>
+          <div>
+            <h3 class="font-bold mb-3">Informasi</h3>
+            <div class="space-y-2 text-sm text-blue-200">
+              <p>Email: pengaduan@unila.ac.id</p>
+              <p>Telepon: (0721) 123456</p>
+              <p class="mt-3 font-semibold text-brand-yellow">Jam Layanan:</p>
+              <p>Senin - Jumat: 08.00 - 16.00 WIB</p>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-blue-700 pt-6 text-center text-sm text-blue-300"
+        >
+          © 2025 Universitas Lampung. All rights reserved.
+        </div>
+      </div>
+    </footer>
+  </body>
 </html>

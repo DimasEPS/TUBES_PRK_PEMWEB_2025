@@ -1,0 +1,27 @@
+/* SiPEMAU - Global Variables & Base Styles */
+:root {
+  /* Brand Colors */
+  --brand-blue: #0f3573;
+  --brand-yellow: #f6c101;
+  --brand-green: #1f8e49;
+
+  /* Status Colors */
+  --status-menunggu: #eab308;
+  --status-diproses: #3b82f6;
+  --status-selesai: #22c55e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+}
