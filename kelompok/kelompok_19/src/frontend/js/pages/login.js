@@ -34,7 +34,7 @@ function handleLogin(event) {
       if (data.success) {
         showSuccess("Login berhasil! Mengalihkan...");
         setTimeout(() => {
-          // Redirect based on role - data langsung berisi user info
+          // Redirect based on role
           if (data.data && data.data.role === "MAHASISWA") {
             window.location.href = "Mahasiswa/dashboardMahasiswa.html";
           } else if (data.data && data.data.role === "PETUGAS") {

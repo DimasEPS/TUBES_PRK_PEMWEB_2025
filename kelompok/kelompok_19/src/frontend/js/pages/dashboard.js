@@ -2,25 +2,30 @@
 
 function loadDashboard() {
   apiGet("/mahasiswa/dashboard")
-    .then(function (response) {
+    .then((response) => {
+      console.log("Dashboard response:", response); // Debug
+      
       if (response.success && response.data) {
-        var data = response.data;
+        const data = response.data;
 
-        // Update user info
-        document.getElementById("userName").textContent = data.user.name;
+        // Update user info from response
+        if (data.user) {
+          document.getElementById("userName").textContent = data.user.name;
+        }
 
         // Update statistics
-        document.getElementById("totalCount").textContent = data.stats.total;
+        document.getElementById("totalCount").textContent = data.stats.total || 0;
         document.getElementById("prosesCount").textContent =
-          data.stats.menunggu + data.stats.diproses;
-        document.getElementById("selesaiCount").textContent =
-          data.stats.selesai;
+          (parseInt(data.stats.menunggu) || 0) + (parseInt(data.stats.diproses) || 0);
+        document.getElementById("selesaiCount").textContent = data.stats.selesai || 0;
 
         // Load recent complaints
-        loadRecentComplaints();
+        if (data.recent_complaints) {
+          displayRecentComplaints(data.recent_complaints);
+        }
       }
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.error("Error loading dashboard:", error);
       alert("Gagal memuat data dashboard");
     });

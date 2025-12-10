@@ -106,6 +106,23 @@ $router->get('/unauthorized', function() {
     $controller->unauthorized();
 });
 
+// ==================== FILE SERVING ====================
+$router->get('/uploads/:filename', function($filename) {
+    $uploadDir = dirname(__DIR__) . '/assets/uploads/';
+    $filePath = $uploadDir . basename($filename);
+    
+    if (!file_exists($filePath)) {
+        http_response_code(404);
+        echo json_encode(['success' => false, 'message' => 'File tidak ditemukan']);
+        return;
+    }
+    
+    $mimeType = mime_content_type($filePath);
+    header('Content-Type: ' . $mimeType);
+    header('Content-Length: ' . filesize($filePath));
+    readfile($filePath);
+});
+
 // ==================== AUTH ROUTES ====================
 $router->post('/login', function() {
     $controller = new AuthController();

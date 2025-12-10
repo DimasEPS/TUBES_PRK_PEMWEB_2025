@@ -33,7 +33,7 @@ function logout() {
     });
 }
 
-// Get current user info
+// Get current user info from backend
 function getUserInfo() {
   return fetch(API_URL + "/mahasiswa/dashboard", {
     method: "GET",
@@ -41,7 +41,7 @@ function getUserInfo() {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.success && data.data) {
+      if (data.success && data.data && data.data.user) {
         return data.data.user;
       }
       return null;

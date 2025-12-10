@@ -15,6 +15,15 @@ class MahasiswaController extends Controller {
      * Dashboard mahasiswa
      */
     public function dashboard() {
+        // Get user info
+        $user = [
+            'id' => $_SESSION['user_id'],
+            'name' => $_SESSION['name'],
+            'email' => $_SESSION['email'],
+            'nim' => $_SESSION['nim'],
+            'role' => $_SESSION['role']
+        ];
+        
         // Get statistics
         $stmt = $this->db->prepare("
             SELECT 
@@ -44,6 +53,7 @@ class MahasiswaController extends Controller {
         return $this->json([
             'success' => true,
             'data' => [
+                'user' => $user,
                 'stats' => $stats,
                 'recent_complaints' => $recentComplaints
             ]
@@ -116,10 +126,13 @@ class MahasiswaController extends Controller {
      */
     public function detailComplaint($id) {
         $stmt = $this->db->prepare("
-            SELECT c.*, cat.name as category_name, u.name as unit_name
+            SELECT c.*, cat.name as category_name, un.name as unit_name,
+                   u.name as mahasiswa_name, m.nim as mahasiswa_nim
             FROM complaints c
             JOIN categories cat ON c.category_id = cat.id
-            JOIN units u ON cat.unit_id = u.id
+            JOIN units un ON cat.unit_id = un.id
+            JOIN mahasiswa m ON c.mahasiswa_id = m.id
+            JOIN users u ON m.id = u.id
             WHERE c.id = ? AND c.mahasiswa_id = ?
         ");
         $stmt->execute([$id, $_SESSION['user_id']]);

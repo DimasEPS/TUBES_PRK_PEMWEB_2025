@@ -69,7 +69,7 @@ function displayComplaintDetail(data) {
     var fileName = complaint.evidence_path.split("/").pop();
     document.getElementById("evidenceName").textContent = fileName;
     document.getElementById("evidenceLink").href =
-      API_URL + "/uploads/" + complaint.evidence_path;
+      API_URL + "/uploads/" + fileName;
   }
 
   // Timeline with notes
