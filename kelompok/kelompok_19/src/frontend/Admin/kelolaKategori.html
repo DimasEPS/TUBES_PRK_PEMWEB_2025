@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Kategori Administrator - SiPEMAU</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-blue': '#1C3F7C', 
+                        'main-bg': '#f4f6f9', 
+                        'status-active-green': '#2ecc71', 
+                        'admin-tag': '#f0f0f0',
+                        'text-dark': '#333',
+                        'text-grey-dark': '#555',
+                        'category-card-bg': '#fcfcfc',
+                    },
+                    spacing: {
+                        'sidebar': '250px',
+                        'header': '50px',
+                    },
+                    borderRadius: {
+                        'lg': '0.75rem', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-dark-blue: #1C3F7C; 
+            --color-active-green: #2ecc71;
+        }
+        .menu-item.active {
+            background-color: var(--color-dark-blue);
+            color: white; 
+            margin-left: 8px; 
+            margin-right: 8px; 
+            border-radius: 0.5rem; 
+        }
+        .menu-item {
+            padding-left: calc(1.25rem - 8px); 
+            padding-right: calc(1.25rem - 8px); 
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem; 
+            width: 1.5rem; 
+            text-align: center;
+        }
+
+        .menu-item:not(.active) i {
+             color: #555; 
+        }
+
+        .category-title i {
+            font-size: 1rem;
+            color: #555; 
+            margin-right: 0.5rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-active-green);
+            border-radius: 50%;
+            margin-right: 0.75rem; 
+        }
+
+    :root {
+        --color-dark-blue: #1C3F7C; 
+        --color-active-green: #2ecc71;
+    }
+
+    .menu-item.active {
+        background-color: var(--color-dark-blue);
+        color: white; 
+        margin-left: 8px; 
+        margin-right: 8px; 
+        border-radius: 0.5rem; 
+    }
+
+    .menu-item {
+        padding-left: calc(1.25rem - 8px); 
+        padding-right: calc(1.25rem - 8px); 
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+
+    .menu-item i {
+        font-size: 1.1rem; 
+        width: 1.5rem; 
+        text-align: center;
+    }
+
+    .menu-item:not(.active) i {
+         color: #555; 
+    }
+
+    .category-title i {
+        font-size: 1rem;
+        color: #555; 
+        margin-right: 0.5rem;
+    }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-active-green);
+        border-radius: 50%;
+        margin-right: 0.75rem; 
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        z-index: 1000; 
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-content {
+        background-color: white;
+        width: 90%; 
+        max-width: 500px; 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 0.75rem; 
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+   
+    .required-label::after {
+        content: '*';
+        color: #ef4444; 
+        margin-left: 0.25rem;
+    }
+ </style>
+</head>
+
+<body class="bg-main-bg">
+    <div class="flex min-h-screen">
+        <aside class="w-sidebar bg-white border-r border-gray-200 shadow-sm flex flex-col">
+            
+            <div class="flex items-center p-5 h-header border-b border-gray-200">
+                <div class="w-9 h-9 bg-dark-blue text-white text-xl font-bold flex items-center justify-center rounded-md mr-3 flex-shrink-0">
+                    S
+                </div>
+                <div class="leading-tight">
+                    <span class="font-semibold text-lg text-dark-blue block">SiPEMAU</span>
+                    <span class="text-xs text-text-grey-dark block">Universitas Lampung</span>
+                </div>
+            </div>
+
+            <nav class="flex flex-col pt-2">
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-th-large w-4 mr-3 text-sm"></i> 
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="far fa-building w-4 mr-3 text-sm"></i>
+                    Kelola Unit
+                </a>
+                <a href="#" class="menu-item active py-3 text-base font-semibold">
+                    <i class="fas fa-tags w-4 mr-3 text-sm"></i>
+                    Kelola Kategori
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-user-friends w-4 mr-3 text-sm"></i>
+                    Kelola Petugas
+                </a>
+            </nav>
+        </aside>
+
+        <div class="flex-grow">
+            <header class="bg-white border-b border-gray-200 h-header flex justify-end items-center px-8 shadow-sm">
+                <div class="flex items-center text-sm">
+                    <span class="text-gray-700 font-medium flex items-center mr-5">
+                        <i class="fas fa-user text-gray-500 mr-2 text-base"></i>
+                        Administrator
+                    </span>
+                    <span class="bg-admin-tag text-gray-700 text-xs font-bold py-1 px-2 rounded mr-5">
+                        ADMIN
+                    </span>
+                    <a href="#" class="text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-sign-out-alt text-base mr-1"></i>
+                        Keluar
+                    </a>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-dark-blue mb-1">Kelola Kategori</h1>
+                        <div class="text-sm text-gray-500">
+                            Kelola kategori pengaduan per unit
+                        </div>
+                    </div>
+                    <button id="btnTambahKategori" class="bg-dark-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200 flex items-center">
+    <i class="fas fa-plus mr-2"></i>
+    Tambah Kategori
+</button>
+                </div>
+
+                <div class="space-y-8">
+                    
+                    <script>
+                        function CategoryCard(title, description, icon, isActive = true) {
+                            const status = isActive ? '<div class="status-dot"></div>' : '';
+                            return `
+                                <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                    <div class="flex flex-col">
+                                        <div class="flex items-center mb-1 category-title">
+                                            <i class="fas ${icon}"></i>
+                                            <h3 class="text-base font-medium text-text-dark">${title}</h3>
+                                        </div>
+                                        <p class="text-xs text-text-grey-dark pl-5">${description}</p>
+                                        <div class="flex items-center space-x-3 mt-2 pl-5">
+                                            <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                            <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0 pt-1">
+                                        ${status}
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    </script>
+
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold text-dark-blue mb-4">Sarana & Prasarana</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-wrench"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Fasilitas Rusak</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Kerusakan fasilitas kampus</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-broom"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Kebersihan</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Masalah kebersihan kampus</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold text-dark-blue mb-4">Akademik</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-calendar-alt"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Jadwal Kuliah</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Permasalahan jadwal perkuliahan</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-user-tie"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Dosen</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Keluhan terkait dosen</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold text-dark-blue mb-4">Keuangan</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-money-check-alt"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Pembayaran UKT</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Masalah pembayaran UKT</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Beasiswa</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Permasalahan beasiswa</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold text-dark-blue mb-4">Kemahasiswaan</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-users"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Organisasi</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Keluhan terkait organisasi mahasiswa</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-xl font-semibold text-dark-blue mb-4">IT & Sistem Informasi</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            
+                            <div class="bg-category-card-bg p-4 rounded-lg flex justify-between items-start border border-gray-200">
+                                <div class="flex flex-col">
+                                    <div class="flex items-center mb-1 category-title">
+                                        <i class="fas fa-server"></i>
+                                        <h3 class="text-base font-medium text-text-dark">Sistem Informasi</h3>
+                                    </div>
+                                    <p class="text-xs text-text-grey-dark pl-5">Masalah sistem informasi kampus</p>
+                                    <div class="flex items-center space-x-3 mt-2 pl-5">
+                                        <a href="#" class="text-dark-blue hover:text-blue-700 text-xs flex items-center"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                        <a href="#" class="text-red-500 hover:text-red-700 text-xs flex items-center"><i class="fas fa-trash-alt mr-1"></i> Hapus</a>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0 pt-1">
+                                    <div class="status-dot"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                
+            </main>
+        </div>
+    </div>
+    </div> 
+
+    <div id="modalTambahKategori" class="modal-backdrop hidden backdrop-blur-sm">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h2 class="text-xl font-semibold text-text-dark">Tambah Kategori Baru</h2>
+                <button id="btnCloseModal" class="text-gray-500 hover:text-gray-800 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body space-y-6">
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="namaKategori">Nama Kategori</label>
+                    <input 
+                        type="text" 
+                        id="namaKategori" 
+                        placeholder="Masukkan nama kategori" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="deskripsiKategori">Deskripsi</label>
+                    <textarea 
+                        id="deskripsiKategori" 
+                        rows="3" 
+                        placeholder="Masukkan deskripsi kategori" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm resize-none focus:ring-dark-blue focus:border-dark-blue"
+                    ></textarea>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="unit">Unit</label>
+                    <input 
+                        type="text" 
+                        id="unit" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-sm font-medium text-text-dark">Kategori aktif</span>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnBatalModal" class="py-2 px-4 text-sm font-medium text-text-dark hover:text-dark-blue transition-colors duration-200 rounded-md">
+                    Batal
+                </button>
+                <button class="bg-dark-blue hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200">
+                    Tambah Kategori
+                </button>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('modalTambahKategori');
+        const btnTambah = document.getElementById('btnTambahKategori');
+        const btnBatal = document.getElementById('btnBatalModal');
+        const btnClose = document.getElementById('btnCloseModal');
+        function showModal() {
+            modal.classList.remove('hidden'); 
+            document.body.style.overflow = 'hidden'; 
+        }
+        function hideModal() {
+            modal.classList.add('hidden'); 
+            document.body.style.overflow = ''; 
+        }
+        btnTambah.addEventListener('click', showModal);
+        btnBatal.addEventListener('click', hideModal);
+        btnClose.addEventListener('click', hideModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Unit Administrator - SiPEMAU</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-blue': '#1C3F7C', 
+                        'main-bg': '#f4f6f9', 
+                        'sipemau-blue-text': '#0a66c2', 
+                        'unit-bg': '#f3f4f6', 
+                        'unit-active-green': '#2ecc71',
+                        'admin-tag': '#f0f0f0',
+                        'text-dark': '#333',
+                        'text-grey-dark': '#555',
+                    },
+                    spacing: {
+                        'sidebar': '250px',
+                        'header': '50px',
+                    },
+                    borderRadius: {
+                        'lg': '0.75rem', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-dark-blue: #1C3F7C; 
+        }
+
+        .menu-item.active {
+            background-color: var(--color-dark-blue);
+            color: white; 
+            margin-left: 8px; 
+            margin-right: 8px; 
+            border-radius: 0.5rem; 
+        }
+
+        .menu-item {
+            padding-left: calc(1.25rem - 8px); 
+            padding-right: calc(1.25rem - 8px); 
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .menu-item i {
+            font-size: 1.1rem; 
+            width: 1.5rem; 
+            text-align: center;
+        }
+
+        .menu-item:not(.active) i {
+             color: #555; 
+        }
+
+        .menu-item:not(.active) i {
+             color: #555; 
+        }
+
+         :root {
+        --color-dark-blue: #1C3F7C; 
+        --color-active-green: #2ecc71;
+    }
+
+    .menu-item.active {
+        background-color: var(--color-dark-blue);
+        color: white; 
+        margin-left: 8px; 
+        margin-right: 8px; 
+        border-radius: 0.5rem; 
+    }
+
+    .menu-item {
+        padding-left: calc(1.25rem - 8px); 
+        padding-right: calc(1.25rem - 8px); 
+        display: flex;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+ 
+    .menu-item i {
+        font-size: 1.1rem; 
+        width: 1.5rem; 
+        text-align: center;
+    }
+
+    .menu-item:not(.active) i {
+         color: #555; 
+    }
+
+    .category-title i {
+        font-size: 1rem;
+        color: #555; 
+        margin-right: 0.5rem;
+    }
+
+    .status-dot {
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-active-green);
+        border-radius: 50%;
+        margin-right: 0.75rem; 
+    }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); 
+        z-index: 1000; 
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-content {
+        background-color: white;
+        width: 90%; 
+        max-width: 500px; 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 0.75rem;
+    }
+
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+  
+    .required-label::after {
+        content: '*';
+        color: #ef4444;
+        margin-left: 0.25rem;
+    }
+    </style>
+</head>
+<body class="bg-main-bg">
+    <div class="flex min-h-screen">
+        <aside class="w-sidebar bg-white border-r border-gray-200 shadow-sm flex flex-col">
+            
+            <div class="flex items-center p-5 h-header border-b border-gray-200">
+                <div class="w-9 h-9 bg-dark-blue text-white text-xl font-bold flex items-center justify-center rounded-md mr-3 flex-shrink-0">
+                    S
+                </div>
+                <div class="leading-tight">
+                    <span class="font-semibold text-lg text-dark-blue block">SiPEMAU</span>
+                    <span class="text-xs text-text-grey-dark block">Universitas Lampung</span>
+                </div>
+            </div>
+
+            <nav class="flex flex-col pt-2">
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-th-large w-4 mr-3 text-sm"></i> 
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item active py-3 text-base font-semibold">
+                    <i class="far fa-building w-4 mr-3 text-sm"></i>
+                    Kelola Unit
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-tags w-4 mr-3 text-sm"></i>
+                    Kelola Kategori
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-user-friends w-4 mr-3 text-sm"></i>
+                    Kelola Petugas
+                </a>
+            </nav>
+        </aside>
+
+        <div class="flex-grow">
+            <header class="bg-white border-b border-gray-200 h-header flex justify-end items-center px-8 shadow-sm">
+                <div class="flex items-center text-sm">
+                    <span class="text-gray-700 font-medium flex items-center mr-5">
+                        <i class="fas fa-user text-gray-500 mr-2 text-base"></i>
+                        Administrator
+                    </span>
+                    <span class="bg-admin-tag text-gray-700 text-xs font-bold py-1 px-2 rounded mr-5">
+                        ADMIN
+                    </span>
+                    <a href="#" class="text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-sign-out-alt text-base mr-1"></i>
+                        Keluar
+                    </a>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-dark-blue mb-1">Kelola Unit</h1>
+                        <div class="text-sm text-gray-500">
+                            Kelola unit-unit yang menangani pengaduan
+                        </div>
+                    </div>
+                   <button id="btnTambahUnit" class="bg-dark-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200 flex items-center">
+                        <i class="fas fa-plus mr-2"></i>
+                        Tambah Unit
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-3 gap-6">
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-tools text-2xl text-dark-blue mr-3 p-2 bg-blue-50 rounded-lg"></i>
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">Sarana & Prasarana</h3>
+                                    <span class="bg-unit-active-green text-white text-xs font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-text-grey-dark mb-4">Menangani fasilitas kampus dan infrastruktur</p>
+                        <p class="text-sm text-text-dark font-medium mb-4">Petugas: <span class="text-dark-blue font-bold">4</span> orang</p>
+                        
+                        <div class="flex justify-end space-x-3 border-t pt-4">
+                            <button class="text-dark-blue hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-edit mr-1.5 text-xs"></i> Edit
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-trash-alt mr-1.5 text-xs"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-graduate text-2xl text-dark-blue mr-3 p-2 bg-blue-50 rounded-lg"></i>
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">Akademik</h3>
+                                    <span class="bg-unit-active-green text-white text-xs font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-text-grey-dark mb-4">Menangani perkuliahan dan administrasi akademik</p>
+                        <p class="text-sm text-text-dark font-medium mb-4">Petugas: <span class="text-dark-blue font-bold">5</span> orang</p>
+                        
+                        <div class="flex justify-end space-x-3 border-t pt-4">
+                            <button class="text-dark-blue hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-edit mr-1.5 text-xs"></i> Edit
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-trash-alt mr-1.5 text-xs"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-wallet text-2xl text-dark-blue mr-3 p-2 bg-blue-50 rounded-lg"></i>
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">Keuangan</h3>
+                                    <span class="bg-unit-active-green text-white text-xs font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-text-grey-dark mb-4">Menangani pembayaran dan administrasi keuangan</p>
+                        <p class="text-sm text-text-dark font-medium mb-4">Petugas: <span class="text-dark-blue font-bold">3</span> orang</p>
+                        
+                        <div class="flex justify-end space-x-3 border-t pt-4">
+                            <button class="text-dark-blue hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-edit mr-1.5 text-xs"></i> Edit
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-trash-alt mr-1.5 text-xs"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-running text-2xl text-dark-blue mr-3 p-2 bg-blue-50 rounded-lg"></i>
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">Kemahasiswaan</h3>
+                                    <span class="bg-unit-active-green text-white text-xs font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-text-grey-dark mb-4">Menangani kegiatan dan layanan kemahasiswaan</p>
+                        <p class="text-sm text-text-dark font-medium mb-4">Petugas: <span class="text-dark-blue font-bold">3</span> orang</p>
+                        
+                        <div class="flex justify-end space-x-3 border-t pt-4">
+                            <button class="text-dark-blue hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-edit mr-1.5 text-xs"></i> Edit
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-trash-alt mr-1.5 text-xs"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-md p-6 border border-gray-100">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-code text-2xl text-dark-blue mr-3 p-2 bg-blue-50 rounded-lg"></i>
+                                <div>
+                                    <h3 class="text-lg font-bold text-text-dark">IT & Sistem Informasi</h3>
+                                    <span class="bg-unit-active-green text-white text-xs font-semibold px-2 py-0.5 rounded-md inline-block mt-0.5">Aktif</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-text-grey-dark mb-4">Menangani teknologi informasi dan sistem kampus</p>
+                        <p class="text-sm text-text-dark font-medium mb-4">Petugas: <span class="text-dark-blue font-bold">3</span> orang</p>
+                        
+                        <div class="flex justify-end space-x-3 border-t pt-4">
+                            <button class="text-dark-blue hover:text-blue-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-edit mr-1.5 text-xs"></i> Edit
+                            </button>
+                            <button class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center">
+                                <i class="fas fa-trash-alt mr-1.5 text-xs"></i> Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    </div> <div id="modalTambahUnit" class="modal-backdrop hidden backdrop-blur-sm">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h2 class="text-xl font-semibold text-text-dark">Tambah Unit Baru</h2>
+                <button id="btnCloseModalUnit" class="text-gray-500 hover:text-gray-800 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body space-y-6">
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="namaUnit">Nama Unit</label>
+                    <input 
+                        type="text" 
+                        id="namaUnit" 
+                        placeholder="Masukkan nama unit" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="deskripsiUnit">Deskripsi</label>
+                    <textarea 
+                        id="deskripsiUnit" 
+                        rows="3" 
+                        placeholder="Masukkan deskripsi unit" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm resize-none focus:ring-dark-blue focus:border-dark-blue"
+                    ></textarea>
+                </div>
+                
+                <div class="flex items-center justify-between pt-2">
+                    <span class="text-sm font-medium text-text-dark">Unit aktif</span>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnBatalModalUnit" class="py-2 px-4 text-sm font-medium text-text-dark hover:text-dark-blue transition-colors duration-200 rounded-md">
+                    Batal
+                </button>
+                <button class="bg-dark-blue hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200">
+                    Tambah Unit
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+        const modalUnit = document.getElementById('modalTambahUnit');
+        const btnTambahUnit = document.getElementById('btnTambahUnit');
+        const btnBatalModalUnit = document.getElementById('btnBatalModalUnit');
+        const btnCloseModalUnit = document.getElementById('btnCloseModalUnit');
+
+        function showModalUnit() {
+            modalUnit.classList.remove('hidden'); 
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModalUnit() {
+            modalUnit.classList.add('hidden'); 
+            document.body.style.overflow = '';
+        }
+        btnTambahUnit.addEventListener('click', showModalUnit);
+        btnBatalModalUnit.addEventListener('click', hideModalUnit);
+        btnCloseModalUnit.addEventListener('click', hideModalUnit);
+        modalUnit.addEventListener('click', (e) => {
+            if (e.target === modalUnit) {
+                hideModalUnit();
+            }
+        });
+    </script>
+</body>
+</html>

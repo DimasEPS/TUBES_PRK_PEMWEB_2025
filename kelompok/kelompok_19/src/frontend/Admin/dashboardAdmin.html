@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Administrator - SiPEMAU</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-blue': '#1C3F7C',
+                        'main-bg': '#f4f6f9', 
+                        'sipemau-blue-text': '#0a66c2', 
+                        
+                   
+                        'card-slate': '#535b62', 
+                        'card-yellow': '#f1c40f', 
+                        'card-green': '#2ecc71', 
+                        'card-blue-dark': '#1C3F7C', 
+                        'card-orange': '#e67e22', 
+                        
+                        'admin-tag': '#f0f0f0',
+                        'text-dark': '#333',
+                        'text-grey-dark': '#555',
+                    },
+                    spacing: {
+                        'sidebar': '250px',
+                        'header': '50px',
+                    },
+                    borderRadius: {
+                        'lg': '0.75rem', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-dark-blue: #1C3F7C; 
+            --color-background-light: #f4f6f9; 
+            --color-primary-table-text: #0a66c2; 
+        }
+        .menu-item.active {
+            background-color: var(--color-dark-blue);
+            color: white;
+            margin-left: 8px;
+            margin-right: 8px;
+            border-radius: 0.5rem; 
+        }
+
+        .menu-item {
+            padding-left: calc(1.25rem - 8px); 
+            padding-right: calc(1.25rem - 8px); 
+            display: flex; 
+            align-items: center;
+            transition: background-color 0.2s; 
+        }
+
+        .menu-item i {
+            font-size: 1.1rem; 
+            width: 1.5rem; 
+            text-align: center;
+        }
+
+        .menu-item:not(.active) i {
+             color: #555; 
+        }
+
+        .status-block {
+            display: inline-block;
+            width: 15px; 
+            height: 15px;
+            border-radius: 3px; 
+            vertical-align: middle;
+        }
+    
+        .card-icon-block {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 35%;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-top-right-radius: 0.75rem; 
+            border-bottom-right-radius: 0.75rem; 
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1.5rem; 
+            opacity: 1; 
+        }
+        .card-icon-block i {
+            color: white;
+            font-size: 2.2rem; 
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="bg-main-bg">
+    <div class="flex min-h-screen">
+        <aside class="w-sidebar bg-white border-r border-gray-200 shadow-sm flex flex-col">
+            
+            <div class="flex items-center p-5 h-header border-b border-gray-200">
+                <div class="w-9 h-9 bg-dark-blue text-white text-xl font-bold flex items-center justify-center rounded-md mr-3 flex-shrink-0">
+                    S
+                </div>
+                <div class="leading-tight">
+                    <span class="font-semibold text-lg text-dark-blue block">SiPEMAU</span>
+                    <span class="text-xs text-text-grey-dark block">Universitas Lampung</span>
+                </div>
+            </div>
+
+            <nav class="flex flex-col pt-2">
+                <a href="#" class="menu-item active py-3 text-base font-semibold">
+                    <i class="fas fa-th-large w-4 mr-3 text-sm"></i> 
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="far fa-building w-4 mr-3 text-sm"></i>
+                    Kelola Unit
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-tags w-4 mr-3 text-sm"></i>
+                    Kelola Kategori
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-user-friends w-4 mr-3 text-sm"></i>
+                    Kelola Petugas
+                </a>
+            </nav>
+        </aside>
+
+        <div class="flex-grow">
+            <header class="bg-white border-b border-gray-200 h-header flex justify-end items-center px-8 shadow-sm">
+                <div class="flex items-center text-sm">
+                    <span class="text-gray-700 font-medium flex items-center mr-5">
+                        <i class="fas fa-user text-gray-500 mr-2 text-base"></i>
+                        Administrator
+                    </span>
+                    <span class="bg-admin-tag text-gray-700 text-xs font-bold py-1 px-2 rounded mr-5">
+                        ADMIN
+                    </span>
+                    <a href="#" class="text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-sign-out-alt text-base mr-1"></i>
+                        Keluar
+                    </a>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <div class="mb-8">
+                    <h1 class="text-2xl font-semibold text-dark-blue mb-1">Dashboard Administrator</h1>
+                    <div class="text-sm text-gray-500">
+                        Selamat datang, Admin SIPEMAU
+                    </div>
+                </div>
+
+                <div class="flex space-x-5 mb-10">
+                    
+                    <div class="bg-white p-5 rounded-lg shadow-md w-1/5 h-[100px] relative overflow-hidden flex flex-col justify-between border border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Total Pengaduan</span>
+                        <div class="text-3xl font-extrabold text-text-dark">156</div>
+                        <div class="card-icon-block bg-card-slate flex items-center justify-end">
+                            <i class="fas fa-envelope-open-text"></i> 
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-5 rounded-lg shadow-md w-1/5 h-[100px] relative overflow-hidden flex flex-col justify-between border border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Total Mahasiswa</span>
+                        <div class="text-3xl font-extrabold text-text-dark">2340</div>
+                        <div class="card-icon-block bg-card-yellow flex items-center justify-end">
+                             <i class="fas fa-user-graduate"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg shadow-md w-1/5 h-[100px] relative overflow-hidden flex flex-col justify-between border border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Total Petugas</span>
+                        <div class="text-3xl font-extrabold text-text-dark">18</div>
+                        <div class="card-icon-block bg-card-green flex items-center justify-end">
+                            <i class="fas fa-users-cog"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg shadow-md w-1/5 h-[100px] relative overflow-hidden flex flex-col justify-between border border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Total Unit</span>
+                        <div class="text-3xl font-extrabold text-text-dark">6</div>
+                        <div class="card-icon-block bg-card-blue-dark flex items-center justify-end">
+                             <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-lg shadow-md w-1/5 h-[100px] relative overflow-hidden flex flex-col justify-between border border-gray-100">
+                        <span class="text-sm text-gray-500 font-medium">Total Kategori</span>
+                        <div class="text-3xl font-extrabold text-text-dark">12</div>
+                        <div class="card-icon-block bg-card-orange flex items-center justify-end">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-text-dark mb-6 border-b-2 border-gray-100 pb-3">Pengaduan per Unit</h2>
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-white">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 capitalize">Unit</th>
+                                <th scope="col" class="px-6 py-3 text-left text-sm font-medium text-gray-500 capitalize">Total</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 capitalize w-1/6">Menunggu</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 capitalize w-1/6">Diproses</th>
+                                <th scope="col" class="px-6 py-3 text-center text-sm font-medium text-gray-500 capitalize w-1/6">Selesai</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-dark">Sarana & Prasarana</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-sipemau-blue-text">45</td> 
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="bg-card-yellow text-text-dark font-semibold text-xs px-3 py-1 rounded-md inline-block">8</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-blue-dark mx-auto"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-green mx-auto"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-dark">Akademik</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-sipemau-blue-text">38</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="bg-card-yellow text-text-dark font-semibold text-xs px-3 py-1 rounded-md inline-block">5</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-blue-dark mx-auto"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-green mx-auto"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-dark">Keuangan</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-sipemau-blue-text">28</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="bg-card-yellow text-text-dark font-semibold text-xs px-3 py-1 rounded-md inline-block">3</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-blue-dark mx-auto"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-green mx-auto"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-dark">Kemahasiswaan</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-sipemau-blue-text">25</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="bg-card-yellow text-text-dark font-semibold text-xs px-3 py-1 rounded-md inline-block">4</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-blue-dark mx-auto"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-green mx-auto"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-dark">IT & Sistem Informasi</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-sipemau-blue-text">20</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="bg-card-yellow text-text-dark font-semibold text-xs px-3 py-1 rounded-md inline-block">2</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-blue-dark mx-auto"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="status-block bg-card-green mx-auto"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Petugas Administrator - SiPEMAU</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                      
+                        'dark-blue': '#1C3F7C', 
+                        'main-bg': '#f4f6f9', 
+                   
+                        'status-active-green': '#2ecc71', 
+                        'admin-tag': '#f0f0f0',
+                        'text-dark': '#333',
+                        'text-grey-dark': '#555',
+                    },
+                    spacing: {
+                        'sidebar': '250px',
+                        'header': '50px',
+                    },
+                    borderRadius: {
+                        'lg': '0.75rem', 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --color-dark-blue: #1C3F7C; 
+        }
+
+        .menu-item.active {
+            background-color: var(--color-dark-blue);
+            color: white; 
+            margin-left: 8px; 
+            margin-right: 8px; 
+            border-radius: 0.5rem; 
+        }
+
+        .menu-item {
+            padding-left: calc(1.25rem - 8px); 
+            padding-right: calc(1.25rem - 8px); 
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .menu-item i {
+            font-size: 1.1rem; 
+            width: 1.5rem; 
+            text-align: center;
+        }
+
+        .menu-item:not(.active) i {
+             color: #555; 
+        }
+
+
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--status-active-green);
+        }
+
+        .table-data-with-icon {
+            display: flex;
+            align-items: center;
+        }
+      
+        .table-data-with-icon i {
+            color: #555; 
+            font-size: 1rem;
+            width: 1.25rem; 
+            text-align: center;
+            margin-right: 0.5rem;
+        }
+
+        table tbody tr td {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        table thead th:first-child, table tbody td:first-child {
+             padding-left: 2rem;
+        }
+        table thead th:last-child, table tbody td:last-child {
+             padding-right: 2rem;
+        }
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4); 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        overflow-y: auto; 
+    }
+
+    .modal-content {
+        background-color: #fff;
+        border-radius: 0.75rem; 
+        width: 100%;
+        max-width: 450px; 
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        margin: 50px 0; 
+    }
+
+    .modal-header {
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-body {
+        padding: 1.5rem 2rem;
+    }
+
+    .modal-footer {
+        padding: 1rem 2rem;
+        border-top: 1px solid #eee;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+    }
+
+    .required-label::after {
+        content: ' *';
+        color: #e74c3c; 
+        font-size: 1rem;
+    }
+    </style>
+</head>
+<body class="bg-main-bg">
+    <div class="flex min-h-screen">
+        <aside class="w-sidebar bg-white border-r border-gray-200 shadow-sm flex flex-col">
+            
+            <div class="flex items-center p-5 h-header border-b border-gray-200">
+                <div class="w-9 h-9 bg-dark-blue text-white text-xl font-bold flex items-center justify-center rounded-md mr-3 flex-shrink-0">
+                    S
+                </div>
+                <div class="leading-tight">
+                    <span class="font-semibold text-lg text-dark-blue block">SiPEMAU</span>
+                    <span class="text-xs text-text-grey-dark block">Universitas Lampung</span>
+                </div>
+            </div>
+
+            <nav class="flex flex-col pt-2">
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-th-large w-4 mr-3 text-sm"></i> 
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="far fa-building w-4 mr-3 text-sm"></i>
+                    Kelola Unit
+                </a>
+                <a href="#" class="menu-item text-gray-600 hover:bg-gray-100 py-3 text-base font-medium">
+                    <i class="fas fa-tags w-4 mr-3 text-sm"></i>
+                    Kelola Kategori
+                </a>
+                <a href="#" class="menu-item active py-3 text-base font-semibold">
+                    <i class="fas fa-user-friends w-4 mr-3 text-sm"></i>
+                    Kelola Petugas
+                </a>
+            </nav>
+        </aside>
+
+        <div class="flex-grow">
+            <header class="bg-white border-b border-gray-200 h-header flex justify-end items-center px-8 shadow-sm">
+                <div class="flex items-center text-sm">
+                    <span class="text-gray-700 font-medium flex items-center mr-5">
+                        <i class="fas fa-user text-gray-500 mr-2 text-base"></i>
+                        Administrator
+                    </span>
+                    <span class="bg-admin-tag text-gray-700 text-xs font-bold py-1 px-2 rounded mr-5">
+                        ADMIN
+                    </span>
+                    <a href="#" class="text-gray-500 hover:text-red-500 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-sign-out-alt text-base mr-1"></i>
+                        Keluar
+                    </a>
+                </div>
+            </header>
+
+            <main class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-semibold text-dark-blue mb-1">Kelola Petugas</h1>
+                        <div class="text-sm text-gray-500">
+                            Kelola akun petugas yang menangani pengaduan
+                        </div>
+                    </div>
+                    <button id="btnTambahPetugas" class="bg-dark-blue hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200 flex items-center">
+    <i class="fas fa-plus mr-2"></i>
+    Tambah Petugas
+</button>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-xl font-semibold text-dark-blue mb-3 border-b border-gray-200 pb-3 pl-2">Daftar Petugas</h2>
+                    
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-white">
+                            <tr>
+                                <th scope="col" class="py-3 text-left text-sm font-bold text-gray-500 capitalize w-1/5">Nama</th>
+                                <th scope="col" class="py-3 text-left text-sm font-bold text-gray-500 capitalize w-1/5">Email</th>
+                                <th scope="col" class="py-3 text-left text-sm font-bold text-gray-500 capitalize w-1/5">Unit</th>
+                                <th scope="col" class="py-3 text-left text-sm font-bold text-gray-500 capitalize w-1/6">Jabatan</th>
+                                <th scope="col" class="py-3 text-center text-sm font-bold text-gray-500 capitalize w-1/12">Status</th>
+                                <th scope="col" class="py-3 text-center text-sm font-bold text-gray-500 capitalize w-1/12">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Rina Wijaya
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> rina.wijaya@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Sarana & Prasarana
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Koordinator</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Budi Santoso
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> budi.santoso@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Sarana & Prasarana
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Staff</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Siti Nurhaliza
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> siti.nurhaliza@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Akademik
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Koordinator</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Ahmad Fadil
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> ahmad.fadil@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Akademik
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Staff</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Dewi Lestari
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> dewi.lestari@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Keuangan
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Koordinator</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="py-4 whitespace-nowrap text-sm font-medium text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-user"></i> Eko Prasetyo
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-envelope"></i> eko.prasetyo@unila.ac.id
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">
+                                    <div class="table-data-with-icon">
+                                        <i class="fas fa-building"></i> Kemahasiswaan
+                                    </div>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-sm text-text-dark">Staff</td>
+                                <td class="py-4 whitespace-nowrap text-center">
+                                    <span class="status-dot bg-status-active-green mx-auto"></span>
+                                </td>
+                                <td class="py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <button class="text-dark-blue hover:text-blue-700 mr-2"><i class="fas fa-edit"></i></button>
+                                    <button class="text-red-500 hover:text-red-700"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div id="modalTambahPetugas" class="modal-backdrop hidden backdrop-blur-sm">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h2 class="text-xl font-semibold text-text-dark">Tambah Petugas Baru</h2>
+                <button id="btnCloseModalPetugas" class="text-gray-500 hover:text-gray-800 text-2xl">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body space-y-5">
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="namaLengkap">Nama Lengkap</label>
+                    <input 
+                        type="text" 
+                        id="namaLengkap" 
+                        placeholder="Masukkan nama lengkap" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="emailPetugas">Email</label>
+                    <input 
+                        type="email" 
+                        id="emailPetugas" 
+                        placeholder="nama@unila.ac.id" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="passwordPetugas">Password</label>
+                    <input 
+                        type="password" 
+                        id="passwordPetugas" 
+                        placeholder="Masukkan password" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="unitPetugas">Unit</label>
+                    <select 
+                        id="unitPetugas" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue bg-white"
+                    >
+                        <option value="">Pilih Unit</option>
+                        <option value="sarana">Sarana & Prasarana</option>
+                        <option value="akademik">Akademik</option>
+                        <option value="keuangan">Keuangan</option>
+                        <option value="kemahasiswaan">Kemahasiswaan</option>
+                        <option value="it">IT & Sistem Informasi</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-dark required-label" for="jabatanPetugas">Jabatan</label>
+                    <select 
+                        id="jabatanPetugas" 
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-dark-blue focus:border-dark-blue bg-white"
+                    >
+                        <option value="">Pilih Jabatan</option>
+                        <option value="koordinator">Koordinator</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button id="btnBatalModalPetugas" class="py-2 px-4 text-sm font-medium text-text-dark hover:text-dark-blue transition-colors duration-200 rounded-md">
+                    Batal
+                </button>
+                <button class="bg-dark-blue hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-md shadow-md transition-colors duration-200">
+                    Tambah Petugas
+                </button>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    <script>
+        const modalPetugas = document.getElementById('modalTambahPetugas');
+        const btnTambahPetugas = document.getElementById('btnTambahPetugas');
+        const btnBatalModalPetugas = document.getElementById('btnBatalModalPetugas');
+        const btnCloseModalPetugas = document.getElementById('btnCloseModalPetugas');
+        function showModalPetugas() {
+            modalPetugas.classList.remove('hidden'); 
+            document.body.style.overflow = 'hidden'; 
+        }
+        function hideModalPetugas() {
+            modalPetugas.classList.add('hidden'); 
+            document.body.style.overflow = ''; 
+        }
+        btnTambahPetugas.addEventListener('click', showModalPetugas);
+        btnBatalModalPetugas.addEventListener('click', hideModalPetugas);
+        btnCloseModalPetugas.addEventListener('click', hideModalPetugas);
+        modalPetugas.addEventListener('click', (e) => {
+            if (e.target === modalPetugas) {
+                hideModalPetugas();
+            }
+        });
+
+    </script>
+</body>
+</html>
