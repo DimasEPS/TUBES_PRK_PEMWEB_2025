@@ -96,11 +96,17 @@ function displayTimeline(complaint, notes) {
   html += "  </div>";
   html += "</div>";
 
-  // Process notes
+  // Process notes - show status based on complaint's current status
   if (notes && notes.length > 0) {
-    for (var i = 0; i < notes.length; i++) {
-      var note = notes[i];
-      var status = note.status || "DIPROSES";
+    // Sort notes by created_at descending (newest first)
+    var sortedNotes = notes.sort(function(a, b) {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+
+    for (var i = 0; i < sortedNotes.length; i++) {
+      var note = sortedNotes[i];
+      // Use complaint status for display, especially for the latest note
+      var status = (i === 0) ? complaint.status : "DIPROSES";
 
       var dotColor, badgeBg, badgeText;
       if (status === "SELESAI") {
@@ -131,17 +137,17 @@ function displayTimeline(complaint, notes) {
         "</span>";
       html += "      " + formatDateTime(note.created_at);
       html += "    </p>";
-      html += '    <p class="text-gray-800 mt-2">' + note.note + "</p>";
+      html += '    <p class="text-gray-800 mt-2">' + escapeHtml(note.note) + "</p>";
       html +=
         '    <p class="text-gray-500 text-sm mt-1">Oleh: ' +
-        note.petugas_name +
+        escapeHtml(note.petugas_name) +
         "</p>";
       html += "  </div>";
       html += "</div>";
     }
   }
 
-  // Status message
+  // Status message based on current complaint status
   if (complaint.status === "SELESAI") {
     html +=
       '<p class="text-green-700 font-medium mt-4 border-t pt-4 bg-green-50 p-3 rounded">✓ Pengaduan Anda telah selesai ditangani</p>';
@@ -180,6 +186,12 @@ function formatDateTime(dateString) {
     minute: "2-digit",
   };
   return date.toLocaleDateString("id-ID", options);
+}
+
+function escapeHtml(text) {
+  var div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // Initialize on page load
