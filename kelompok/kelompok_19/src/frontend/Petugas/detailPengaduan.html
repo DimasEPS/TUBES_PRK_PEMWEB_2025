@@ -1,872 +1,142 @@
+<!-- frontend/Petugas/detailPengaduan.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pengaduan - SiPEMAU</title>
-    <link rel="stylesheet" href="../css/index.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #1e40af;
-            --primary-dark: #1e3a8a;
-            --secondary: #3b82f6;
-            --success: #22c55e;
-            --warning: #eab308;
-            --danger: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: var(--gray-100);
-            color: var(--gray-800);
-            line-height: 1.6;
-        }
-
-        /* Header */
-        .header {
-            background: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-
-        .logo-text h1 {
-            font-size: 1.25rem;
-            color: var(--gray-900);
-        }
-
-        .logo-text p {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-            font-weight: 400;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .user-details {
-            text-align: right;
-        }
-
-        .user-name {
-            font-weight: 600;
-            color: var(--gray-900);
-            font-size: 0.875rem;
-        }
-
-        .user-role {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-            text-transform: uppercase;
-        }
-
-        .btn-logout {
-            padding: 0.5rem 1rem;
-            background: var(--danger);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .btn-logout:hover {
-            background: #dc2626;
-        }
-
-        /* Layout */
-        .container {
-            display: flex;
-            min-height: calc(100vh - 73px);
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            background: white;
-            box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem 0;
-        }
-
-        .nav-item {
-            padding: 0.75rem 1.5rem;
-            color: var(--gray-700);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            transition: all 0.2s;
-            cursor: pointer;
-            border-left: 3px solid transparent;
-        }
-
-        .nav-item:hover {
-            background: var(--gray-50);
-            color: var(--primary);
-        }
-
-        .nav-item.active {
-            background: #dbeafe;
-            color: var(--primary);
-            border-left-color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 2rem;
-        }
-
-        /* Back Button */
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            padding: 0.5rem 0;
-            transition: all 0.2s;
-        }
-
-        .back-button:hover {
-            gap: 0.75rem;
-        }
-
-        /* Page Header */
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 2rem;
-        }
-
-        .page-title-section {
-            flex: 1;
-        }
-
-        .page-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .page-subtitle {
-            color: var(--gray-600);
-            font-size: 0.875rem;
-        }
-
-        .status-badge {
-            font-size: 0.75rem;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-        }
-
-        .status-menunggu {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-diproses {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-selesai {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        /* Content Grid */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 1.5rem;
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .card-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--gray-900);
-        }
-
-        .card-body {
-            padding: 1.5rem;
-        }
-
-        /* Info Items */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .info-item {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .info-item.full {
-            grid-column: 1 / -1;
-        }
-
-        .info-label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            color: var(--gray-600);
-            font-weight: 500;
-        }
-
-        .info-label svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .info-value {
-            font-size: 0.875rem;
-            color: var(--gray-900);
-            font-weight: 500;
-        }
-
-        .info-description {
-            font-size: 0.875rem;
-            color: var(--gray-700);
-            line-height: 1.6;
-            padding: 1rem;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border: 1px solid var(--gray-200);
-        }
-
-        /* Attachment */
-        .attachment-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--gray-50);
-            border-radius: 8px;
-            border: 1px solid var(--gray-200);
-        }
-
-        .attachment-icon {
-            width: 48px;
-            height: 48px;
-            background: var(--primary);
-            color: white;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.75rem;
-        }
-
-        .attachment-info {
-            flex: 1;
-        }
-
-        .attachment-name {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray-900);
-            margin-bottom: 0.25rem;
-        }
-
-        .attachment-size {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-        }
-
-        .btn-download {
-            padding: 0.5rem 1rem;
-            background: white;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-download:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Sidebar Card - Pelapor */
-        .pelapor-card {
-            text-align: center;
-        }
-
-        .pelapor-avatar {
-            width: 80px;
-            height: 80px;
-            background: var(--primary);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 600;
-            margin: 0 auto 1rem;
-        }
-
-        .pelapor-name {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-bottom: 0.25rem;
-        }
-
-        .pelapor-npm {
-            font-size: 0.875rem;
-            color: var(--gray-600);
-            margin-bottom: 1.5rem;
-        }
-
-        .pelapor-contact {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--gray-200);
-            text-align: left;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.875rem;
-            color: var(--gray-700);
-        }
-
-        .contact-item svg {
-            width: 18px;
-            height: 18px;
-            color: var(--gray-600);
-        }
-
-        /* Update Status Card */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .required {
-            color: var(--danger);
-        }
-
-        .form-select {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            border: 1px solid var(--gray-300);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: var(--gray-900);
-            background: white;
-            transition: all 0.2s;
-        }
-
-        .form-select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-        }
-
-        .form-textarea {
-            width: 100%;
-            padding: 0.625rem 0.875rem;
-            border: 1px solid var(--gray-300);
-            border-radius: 8px;
-            font-size: 0.875rem;
-            color: var(--gray-900);
-            resize: vertical;
-            min-height: 100px;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
-        }
-
-        .form-textarea::placeholder {
-            color: var(--gray-400);
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 0.75rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-dark);
-        }
-
-        .btn-submit:disabled {
-            background: var(--gray-300);
-            cursor: not-allowed;
-        }
-
-        /* Riwayat Timeline */
-        .timeline {
-            position: relative;
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 2.5rem;
-            padding-bottom: 1.5rem;
-        }
-
-        .timeline-item:last-child {
-            padding-bottom: 0;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 0.625rem;
-            top: 2rem;
-            bottom: 0;
-            width: 2px;
-            background: var(--gray-200);
-        }
-
-        .timeline-item:last-child::before {
-            display: none;
-        }
-
-        .timeline-badge {
-            position: absolute;
-            left: 0;
-            top: 0.375rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .timeline-badge.yellow {
-            background: var(--warning);
-        }
-
-        .timeline-badge.blue {
-            background: var(--primary);
-        }
-
-        .timeline-badge.green {
-            background: var(--success);
-        }
-
-        .timeline-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-status {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--gray-900);
-        }
-
-        .timeline-date {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-        }
-
-        .timeline-content {
-            font-size: 0.875rem;
-            color: var(--gray-700);
-            line-height: 1.6;
-        }
-
-        .timeline-by {
-            font-size: 0.75rem;
-            color: var(--gray-600);
-            margin-top: 0.5rem;
-        }
-
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-            color: var(--gray-600);
-        }
-
-        .spinner {
-            border: 3px solid var(--gray-200);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Alert */
-        .alert {
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .alert-success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 1px solid #10b981;
-        }
-
-        .alert-error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #ef4444;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .content-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-
-            .header {
-                padding: 1rem;
-            }
-
-            .main-content {
-                padding: 1rem;
-            }
-
-            .page-header {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .info-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Detail Pengaduan - SiPEMAU</title>
+
+  <!-- Tailwind CDN (utility classes) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Existing project CSS (optional, keeps global overrides) -->
+  <link rel="stylesheet" href="../css/index.css" />
+
+  <style>
+    /* minor custom overrides to keep consistent with project look */
+    .card { @apply bg-white rounded-lg shadow-sm; }
+    .status-badge { @apply inline-flex items-center px-3 py-1 rounded-md font-semibold text-xs; }
+  </style>
 </head>
-<body>
-    <!-- Header -->
-    <header class="header">
-        <div class="logo">
-            <div class="logo-icon">S</div>
-            <div class="logo-text">
-                <h1>SIPEMAU</h1>
-                <p>Universitas Lampung</p>
-            </div>
+<body class="bg-gray-100 text-gray-800 antialiased">
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-4">
+          <div class="w-10 h-10 bg-blue-800 text-white rounded-md flex items-center justify-center font-bold">S</div>
+          <div>
+            <div class="font-semibold text-blue-900">SiPEMAU</div>
+            <div class="text-xs text-gray-500">Universitas Lampung</div>
+          </div>
         </div>
-        <div class="user-info">
-            <div class="user-details">
-                <div class="user-name" id="userName">Loading...</div>
-                <div class="user-role">PETUGAS</div>
-            </div>
-            <button class="btn-logout" onclick="handleLogout()">Keluar</button>
+        <div class="flex items-center gap-4">
+          <div class="text-sm font-medium text-gray-700" id="headerUserName">Loading...</div>
+          <button id="btnLogout" class="text-sm text-blue-600 hover:underline">Keluar</button>
         </div>
-    </header>
-
-    <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <a href="./dashboardPetugas.html" class="nav-item">
-                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
-                </svg>
-                Dashboard
-            </a>
-            <a href="./listPengaduan.html" class="nav-item active">
-                <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                </svg>
-                Daftar Pengaduan
-            </a>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <a href="./listPengaduan.html" class="back-button">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                </svg>
-                Kembali
-            </a>
-
-            <!-- Loading -->
-            <div id="loadingIndicator" class="loading">
-                <div class="spinner"></div>
-                <p>Memuat detail pengaduan...</p>
-            </div>
-
-            <!-- Main Content -->
-            <div id="mainContent" style="display: none;">
-                <div class="page-header">
-                    <div class="page-title-section">
-                        <h1 class="page-title">Detail Pengaduan</h1>
-                        <p class="page-subtitle">ID Pengaduan: <span id="pageId">#2</span></p>
-                    </div>
-                    <span class="status-badge status-diproses" id="statusBadge">DIPROSES</span>
-                </div>
-
-                <div class="content-grid">
-                    <!-- Main Content Column -->
-                    <div>
-                        <!-- Informasi Pengaduan -->
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title">Informasi Pengaduan</h2>
-                            </div>
-                            <div class="card-body">
-                                <div class="info-grid">
-                                    <div class="info-item full">
-                                        <div class="info-label">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"/>
-                                            </svg>
-                                            Judul
-                                        </div>
-                                        <div class="info-value" id="infoJudul">-</div>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <div class="info-label">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                                            </svg>
-                                            Kategori
-                                        </div>
-                                        <div class="info-value" id="infoKategori">-</div>
-                                    </div>
-
-                                    <div class="info-item">
-                                        <div class="info-label">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                            </svg>
-                                            Tanggal Dibuat
-                                        </div>
-                                        <div class="info-value" id="infoTanggal">-</div>
-                                    </div>
-
-                                    <div class="info-item full">
-                                        <div class="info-label">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
-                                            </svg>
-                                            Deskripsi
-                                        </div>
-                                        <div class="info-description" id="infoDeskripsi">-</div>
-                                    </div>
-
-                                    <div class="info-item full">
-                                        <div class="info-label">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                            </svg>
-                                            Bukti Pendukung
-                                        </div>
-                                        <div id="attachmentContainer">
-                                            <!-- Attachment will be inserted here -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Riwayat Penanganan -->
-                        <div class="card" style="margin-top: 1.5rem;">
-                            <div class="card-header">
-                                <h2 class="card-title">Riwayat Penanganan</h2>
-                            </div>
-                            <div class="card-body">
-                                <div class="timeline" id="timelineContainer">
-                                    <!-- Timeline items will be inserted here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sidebar Column -->
-                    <div>
-                        <!-- Informasi Pelapor -->
-                        <div class="card pelapor-card">
-                            <div class="card-header">
-                                <h2 class="card-title">Informasi Pelapor</h2>
-                            </div>
-                            <div class="card-body">
-                                <div class="pelapor-avatar" id="pelaporAvatar">A</div>
-                                <div class="pelapor-name" id="pelaporNama">-</div>
-                                <div class="pelapor-npm" id="pelaporNpm">-</div>
-                                <div class="pelapor-contact">
-                                    <div class="contact-item">
-                                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                        </svg>
-                                        <span id="pelaporEmail">-</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Update Status -->
-                        <div class="card" style="margin-top: 1.5rem;">
-                            <div class="card-header">
-                                <h2 class="card-title">Update Status</h2>
-                            </div>
-                            <div class="card-body">
-                                <div id="alertContainer"></div>
-                                
-                                <form id="updateStatusForm">
-                                    <div class="form-group">
-                                        <label class="form-label">Status Baru <span class="required">*</span></label>
-                                        <select class="form-select" id="statusBaru" required>
-                                            <option value="">Pilih status...</option>
-                                            <option value="menunggu">Menunggu</option>
-                                            <option value="diproses">Diproses</option>
-                                            <option value="selesai">Selesai</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="form-label">Catatan <span class="required">*</span></label>
-                                        <textarea class="form-textarea" id="catatan" rows="4" placeholder="Tambahkan catatan penanganan..." required></textarea>
-                                    </div>
-
-                                    <button type="submit" class="btn-submit" id="btnSubmit">
-                                        Simpan Perubahan
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+      </div>
     </div>
+  </header>
 
-    <!-- Scripts -->
-    <script src="../js/utils/config.js"></script>
-    <script src="../js/utils/api.js"></script>
-    <script src="../js/utils/auth.js"></script>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="flex gap-6">
+      <!-- Left Sidebar -->
+      <aside class="w-64 hidden md:block">
+        <div class="card p-4 space-y-2">
+          <a href="./dashboardPetugas.html" class="block text-gray-700 hover:text-blue-700">Dashboard</a>
+          <a href="./pengaduan.html" class="block text-gray-900 font-semibold">Daftar Pengaduan</a>
+        </div>
+      </aside>
+
+      <!-- Main -->
+      <main class="flex-1 space-y-6">
+        <div class="flex items-center gap-4">
+          <a href="./dashboardPetugas.html" class="text-blue-600 hover:underline">← Kembali</a>
+          <h1 class="text-2xl font-bold text-blue-900">Detail Pengaduan</h1>
+        </div>
+
+        <!-- Detail card -->
+        <section class="card p-6">
+          <div class="flex justify-between items-start">
+            <div>
+              <div id="subtitleId" class="text-sm text-gray-500">ID Pengaduan: -</div>
+              <h2 id="judul" class="text-xl font-semibold text-gray-900 mt-2">-</h2>
+            </div>
+            <div id="topStatusContainer"></div>
+          </div>
+
+          <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left (info) -->
+            <div class="lg:col-span-2 space-y-4">
+              <div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide">Kategori</div>
+                <div id="kategori" class="text-sm font-medium text-gray-900">-</div>
+              </div>
+
+              <div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide">Tanggal Dibuat</div>
+                <div id="tanggal" class="text-sm text-gray-700">-</div>
+              </div>
+
+              <div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide">Deskripsi</div>
+                <div id="deskripsi" class="mt-2 p-4 bg-gray-50 rounded-md text-sm text-gray-700">-</div>
+              </div>
+
+              <div>
+                <div class="text-xs text-gray-500 uppercase tracking-wide">Bukti Pendukung</div>
+                <div id="evidenceContainer" class="mt-2 space-y-2"></div>
+              </div>
+            </div>
+
+            <!-- Right (sidebar actions) -->
+            <aside class="space-y-4">
+              <div class="card p-4">
+                <div class="text-sm font-semibold mb-3">Informasi Pelapor</div>
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 bg-blue-800 text-white rounded-md flex items-center justify-center font-semibold">P</div>
+                  <div>
+                    <div id="pelaporNama" class="font-medium text-gray-900">-</div>
+                    <div id="pelaporNpm" class="text-xs text-gray-500">-</div>
+                  </div>
+                </div>
+                <div id="pelaporEmail" class="text-xs text-gray-500 mt-3">-</div>
+              </div>
+
+              <div class="card p-4">
+                <div class="text-sm font-semibold mb-3">Update Status</div>
+                <label class="block text-xs text-gray-500 mb-1">Status Baru *</label>
+                <select id="statusSelect" class="w-full border rounded-md px-3 py-2 text-sm">
+                  <option value="">-- Pilih status --</option>
+                  <option value="menunggu">Menunggu</option>
+                  <option value="diproses">Diproses</option>
+                  <option value="selesai">Selesai</option>
+                </select>
+
+                <label class="block text-xs text-gray-500 mt-3 mb-1">Catatan *</label>
+                <textarea id="catatanInput" rows="4" class="w-full border rounded-md px-3 py-2 text-sm" placeholder="Tambahkan catatan penanganan..."></textarea>
+
+                <button id="saveStatusBtn" class="mt-4 w-full bg-blue-800 text-white rounded-md py-2 font-semibold hover:bg-blue-900">Simpan Perubahan</button>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- History -->
+        <section class="card p-6">
+          <div class="text-lg font-semibold text-gray-900 mb-4">Riwayat Penanganan</div>
+          <div id="historyTimeline" class="space-y-4">
+            <!-- timeline items -->
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- scripts -->
+  <script src="../js/utils/config.js"></script>
+  <script src="../js/utils/api.js"></script>
+  <script src="../js/utils/auth.js"></script>
+  <script src="../js/pages/detailPengaduan.js"></script>
+</body>
+</html>
